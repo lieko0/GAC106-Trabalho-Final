@@ -5,36 +5,41 @@ import java.util.List;
 
 public class Graph {
 
-    int[][] adjacencyMatrix;
-    int tipo;
-    int tipoAlt;
+    private int[][] adjacencyMatrix;
+    private int tipo;
+    private int tipoAlt;
     private static final int NO_PARENT = 4;
     private List<Integer> caminho;
+    private int altura;
+    private int largura;
 
     public Graph(int altura, int largura, int tipo, int tipoAlt) {
         adjacencyMatrix = new int[altura * largura][altura * largura];
         for (int i = 0; i < altura * largura; i++) {
-            for (int j = 0; j < largura; j++) {
+            for (int j = 0; j < altura * largura; j++) {
                 adjacencyMatrix[i][j] = 0;
             }
         }
+        this.altura = altura;
+        this.largura = largura;
         this.tipo = tipo;
         this.tipoAlt = tipoAlt;
         this.caminho = new ArrayList<Integer>();
     }
 
     public void criarGrafo(ItemMapa[][] itens, int altura, int largura) {
-        for (int i = 0; i < altura; i++) {
-            for (int j = 0; j < largura; j++) {
+        for (int i = 0; i < largura; i++) {
+            for (int j = 0; j < altura; j++) {
                 if (itens[i][j].getTipo() == tipo || itens[i][j].getTipo() == tipoAlt) {
-                    if (i + 1 < altura && (itens[i + 1][j].getTipo() == tipo || itens[i + 1][j].getTipo() == tipoAlt)) {
-                        adjacencyMatrix[largura * i + j][largura * (i + 1) + j] = 1;
-                        adjacencyMatrix[largura * (i + 1) + j][largura * i + j] = 1;
+                    if (i + 1 < largura
+                            && (itens[i + 1][j].getTipo() == tipo || itens[i + 1][j].getTipo() == tipoAlt)) {
+                        adjacencyMatrix[largura * j + 1 + i][largura * j + i] = 1;
+                        adjacencyMatrix[largura * j + i][largura * j + 1 + i] = 1;
                     }
-                    if (j + 1 < largura
+                    if (j + 1 < altura
                             && (itens[i][j + 1].getTipo() == tipo || itens[i][j + 1].getTipo() == tipoAlt)) {
-                        adjacencyMatrix[largura * i + j][largura * i + j + 1] = 1;
-                        adjacencyMatrix[largura * i + j + 1][largura * i + j] = 1;
+                        adjacencyMatrix[largura * (j + 1) + i][largura * j + i] = 1;
+                        adjacencyMatrix[largura * j + i][largura * (j + 1) + i] = 1;
                     }
                 }
             }
@@ -42,8 +47,18 @@ public class Graph {
     }
 
     public List<Integer> menosCaminho(int startVertex, int destino) {
+        caminho.clear();
         dijkstra(adjacencyMatrix, startVertex, destino);
         return caminho;
+    }
+
+    public List<Localizacao> menosCaminhoL(Localizacao origem, Localizacao destino) {
+        List<Localizacao> loc = new ArrayList<Localizacao>();
+        for (Integer i : menosCaminho(largura * origem.getY() + origem.getX(), largura *
+                destino.getY() + destino.getX())) {
+            loc.add(new Localizacao(i % largura, i / largura));
+        }
+        return loc;
     }
 
     private void dijkstra(int[][] adjacencyMatrix,

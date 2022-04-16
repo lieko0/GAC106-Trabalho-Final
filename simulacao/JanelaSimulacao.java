@@ -11,14 +11,19 @@ import javax.swing.*;
  */
 public class JanelaSimulacao extends JFrame {
     private Mapa mapa;
+    private Entidades entidades;
     private VisaoMapa visaoMapa;
 
-    public JanelaSimulacao(Mapa mapa) {
+    public JanelaSimulacao(Mapa mapa, Entidades entidades) {
         this.mapa = mapa;
+        this.entidades = entidades;
         visaoMapa = new VisaoMapa(mapa.getLargura(), mapa.getAltura());
         getContentPane().add(visaoMapa);
         setTitle("Simulator");
-        setSize(600, 600);
+        float ratioAlt = 1500 * ((float) mapa.getAltura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
+        float ratioLar = 1500 * ((float) mapa.getLargura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
+        setSize((int) ratioLar,
+                (int) ratioAlt);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -29,14 +34,21 @@ public class JanelaSimulacao extends JFrame {
     public void executarAcao() {
 
         visaoMapa.preparePaint();
-        for (int i = 0; i < mapa.getAltura(); i++) {
-            for (int j = 0; j < mapa.getLargura(); j++) {
-                if (mapa.getItem(i, j) != null) {// Se existir algum objeto na posicao (i,j)
+        Localizacao localizacao;
+        for (int i = 0; i < mapa.getLargura(); i++) {
+            for (int j = 0; j < mapa.getAltura(); j++) {
+                if (mapa.getItem(i, j) != null) {// Se existir algum objeto na
+                                                 // posicao (i,j)
                     ItemMapa chao = mapa.getItem(i, j);
-                    Localizacao localizacao = chao.getLocalizacaoAtual();
-                    visaoMapa.desenharImagem(localizacao.getX(), localizacao.getY(), chao.getImagem());
+                    localizacao = chao.getLocalizacaoAtual();
+                    visaoMapa.desenharImagem(localizacao.getY(), localizacao.getX(), chao.getImagem());
+
                 }
+
             }
+        }
+        for (ItemDinamico d : entidades.getTodasEntidades()) {
+            visaoMapa.desenharImagem(d.getLocalizacaoAtual().getY(), d.getLocalizacaoAtual().getX(), d.getImagem());
         }
         visaoMapa.repaint();
     }
@@ -113,7 +125,8 @@ public class JanelaSimulacao extends JFrame {
                     xScale - 1, yScale - 1, this);
 
             // ********* debug grafo **********
-            g.drawString("( x" + x + ",y" + y + " ) v" + (y * larguraMapa + x), x * xScale + 1, y * yScale + 35);
+            g.drawString("(x" + x + ",y" + y + ")v" + (y * larguraMapa + x), x *
+                    xScale, y * yScale + 35);
         }
 
         /**

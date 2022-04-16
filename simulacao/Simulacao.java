@@ -1,7 +1,9 @@
 package simulacao;
 //package simulacao;
 
-import java.util.Random;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Random;
 
 /**
  * Responsavel pela simulacao.
@@ -9,15 +11,17 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Simulacao {
-    private Veiculo veiculo;
+    // private Veiculo veiculo;
     private JanelaSimulacao janelaSimulacao;
     private Mapa mapa;
+    private Entidades entidades;
 
     public Simulacao() {
-        Random rand = new Random(11111);
+        // Random rand = new Random(345345684);
         mapa = new Mapa();
-        int largura = mapa.getLargura();
-        int altura = mapa.getAltura();
+
+        // int largura = mapa.getLargura();
+        // int altura = mapa.getAltura();
         // veiculo = new Veiculo(new Localizacao(rand.nextInt(largura),
         // rand.nextInt(altura)));// Cria um veiculo em uma
         // posicao aleatoria
@@ -26,9 +30,77 @@ public class Simulacao {
         // destino
         // aleatoriamente
         // mapa.adicionarItem(veiculo);// Inicializando o mapa com o veículo
-        mapa.gerarMapa(mapa.getLargura(), mapa.getAltura());
+        mapa.gerarMapa();
+        entidades = new Entidades(mapa);
+        entidades.criarPopulacao();
 
-        janelaSimulacao = new JanelaSimulacao(mapa);
+        //
+        //
+        //
+        // Teste de grafos para gerar caminhos nas calcadas
+        //
+        //
+        //
+        /*
+         * Localizacao origem = mapa.getCalcada().get((int) Math.floor(Math.random() *
+         * mapa.getCalcada().size()))
+         * .getLocalizacaoAtual();
+         * Localizacao destino = mapa.getCalcada().get((int)
+         * Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
+         * .getLocalizacaoAtual();
+         * 
+         * System.out.println("Pedestre\nOrigem: " + origem + " " + (largura *
+         * origem.getX() + origem.getY()));
+         * System.out.println("Destino: " + destino + " " + (largura * destino.getX() +
+         * destino.getY()));
+         */
+
+        /*
+         * caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura *
+         * destino.getX() + destino.getY()));
+         * 
+         * System.out.print("|> ");
+         * for (Integer a : caminho) {
+         * System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " +
+         * a);
+         * }
+         * System.out.print(" >|\n");
+         */
+        //
+        //
+        //
+        // Teste de grafos para gerar caminhos nas calcadas
+        //
+        //
+        //
+        /*
+         * origem = mapa.getRuas().get((int) Math.floor(Math.random() *
+         * mapa.getRuas().size())).getLocalizacaoAtual();
+         * destino = mapa.getRuas().get((int) Math.floor(rand.nextDouble() *
+         * mapa.getRuas().size())).getLocalizacaoAtual();
+         * 
+         * System.out.println("\nVeiculo\nOrigem: " + origem + " " + (largura *
+         * origem.getX() + origem.getY()));
+         * System.out.println("Destino: " + destino + " " + (largura * destino.getX() +
+         * destino.getY()));
+         *//*
+            * g = new Graph(altura, largura, mapa.getTipoRua(),
+            * mapa.getTipoFaixaPedestre());
+            * 
+            * g.criarGrafo(mapa.getItens(), altura, largura);
+            */
+        /*
+         * caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura *
+         * destino.getX() + destino.getY()));
+         * 
+         * System.out.print("|> ");
+         * for (Integer a : caminho) {
+         * System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " +
+         * a);
+         * }
+         * System.out.print(" >|\n");
+         */
+        janelaSimulacao = new JanelaSimulacao(mapa, entidades);
     }
 
     public void executarSimulacao(int numPassos) {
@@ -36,14 +108,12 @@ public class Simulacao {
         janelaSimulacao.executarAcao();
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
-            esperar(100);
+            esperar(1200);
         }
     }
 
     private void executarUmPasso() {
-        // mapa.removerItem(veiculo);
-        // veiculo.executarAcao();
-        // mapa.adicionarItem(veiculo);
+        entidades.executar();
         janelaSimulacao.executarAcao();
     }
 

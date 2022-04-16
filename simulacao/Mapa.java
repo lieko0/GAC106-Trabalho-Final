@@ -22,6 +22,10 @@ public class Mapa {
     private List<ItemMapa> calcada;
     private List<ItemMapa> faixa;
 
+    private int tipoRua = 0;
+    private int tipoCalcada = 1;
+    private int tipoFaixaPedestre = 2;
+
     /**
      * Cria mapa para alocar itens da simulacao.
      * 
@@ -31,7 +35,7 @@ public class Mapa {
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
-        itens = new ItemMapa[altura][largura];
+        itens = new ItemMapa[largura][altura];
         ruas = new ArrayList<ItemMapa>();
         calcada = new ArrayList<ItemMapa>();
         faixa = new ArrayList<ItemMapa>();
@@ -60,25 +64,37 @@ public class Mapa {
         return faixa;
     }
 
-    public void gerarMapa(int largura, int altura) {
+    public int getTipoCalcada() {
+        return tipoCalcada;
+    }
+
+    public int getTipoFaixaPedestre() {
+        return tipoFaixaPedestre;
+    }
+
+    public int getTipoRua() {
+        return tipoRua;
+    }
+
+    public void gerarMapa() {
         // Configurações da geração de rua
         int quantidadeRuas = (int) (altura * largura * 0.3); // Numero de blocos do tipo rua
         int espacamento = 10; // Tendência de tamanho das ruas (>=1) quando maior, menos denso será o mapa
         int borda = 1; // Espaço minimo entre qualquer bloco de rua e a borda (preferencialmetne >=1)
-        int tipoRua = 0; // ID do bloco de rua
+        // int tipoRua = 0; // ID do bloco de rua
         String imagemRua = "Imagens/rua.jpg"; // Imagem do bloco de rua
         gerarRuas(quantidadeRuas, espacamento, borda, imagemRua, tipoRua);
 
         // Configurações da geração de calcadas (sempre gerada 1 bloco ao redor das
         // ruas)
-        int tipoCalcada = 1; // ID do bloco de calcada
+        // int tipoCalcada = 1; // ID do bloco de calcada
         String imagemCalcada = "Imagens/calcada.jpg"; // Imagem do bloco de calcada
         gerarCalcada(imagemCalcada, tipoCalcada);
 
         // Configurações da geração de calcadas (sempre gerada em qualquer cruzamento de
         // ruas)
         // Caso não tenha cruzamentos uma faixa será criada aleatoriamente
-        int tipoFaixaPedestre = 2; // ID do bloco de faixa de pedestre
+        // int tipoFaixaPedestre = 2; // ID do bloco de faixa de pedestre
         String imagemFaixaPedestre = "Imagens/faixa.jpg"; // Imagem do bloco de faixa (horizontal)
         String imagemFaixaPedestreFlip = "Imagens/faixa_alt.jpg"; // Imagem do bloco de faixa (vertical)
         gerarFaixaPedestre(tipoRua, tipoCalcada, imagemFaixaPedestre,
@@ -90,81 +106,29 @@ public class Mapa {
         String imagemPreenchimento = "Imagens/preenchimento.jpg"; // Imagem do bloco de preenchimento
         preencheEspaco(imagemPreenchimento, tipoPreenchimento);
 
-        //
-        //
-        //
-        // Teste de grafos para gerar caminhos nas calcadas
-        //
-        //
-        //
-
-        Localizacao origem = calcada.get((int) Math.floor(Math.random() * calcada.size())).getLocalizacaoAtual();
-        Localizacao destino = calcada.get((int) Math.floor(rand.nextDouble() * calcada.size())).getLocalizacaoAtual();
-
-        System.out.println("Pedestre\nOrigem: " + origem + " " + (largura * origem.getX() + origem.getY()));
-        System.out.println("Destino: " + destino + " " + (largura * destino.getX() + destino.getY()));
-
-        Graph g = new Graph(altura, largura, tipoCalcada, tipoFaixaPedestre);
-        List<Integer> caminho = new ArrayList<Integer>();
-
-        g.criarGrafo(itens, altura, largura);
-
-        caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura * destino.getX() + destino.getY()));
-
-        System.out.print("|> ");
-        for (Integer a : caminho) {
-            System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " + a);
-        }
-        System.out.print(" >|\n");
-
-        //
-        //
-        //
-        // Teste de grafos para gerar caminhos nas calcadas
-        //
-        //
-        //
-
-        origem = ruas.get((int) Math.floor(Math.random() * ruas.size())).getLocalizacaoAtual();
-        destino = ruas.get((int) Math.floor(rand.nextDouble() * ruas.size())).getLocalizacaoAtual();
-
-        System.out.println("\nVeiculo\nOrigem: " + origem + " " + (largura * origem.getX() + origem.getY()));
-        System.out.println("Destino: " + destino + " " + (largura * destino.getX() + destino.getY()));
-
-        g = new Graph(altura, largura, tipoRua, tipoFaixaPedestre);
-
-        g.criarGrafo(itens, altura, largura);
-
-        caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura * destino.getX() + destino.getY()));
-
-        System.out.print("|> ");
-        for (Integer a : caminho) {
-            System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " + a);
-        }
-        System.out.print(" >|\n");
     }
 
     private void gerarRuas(int max, int espacamento, int borda, String imagemCaminho, int tipo) {
         ItemMapa umItem;
         int dir;
-        // System.out.println(max + " - tudo: " + altura + "," + largura + " = " +
-        // largura * altura);
+        System.out.println(max + " - tudo: " + altura + "," + largura + " = " +
+                largura * altura);
         int alt = 0;
         int lar = 0;
-        int cont1 = 1, /* cont, */ loop, loop1 = 0;
+        int cont1 = 1, cont, loop, loop1 = 0;
         alt = rand.nextInt(altura - 2 * borda) + borda;
         lar = rand.nextInt(largura - 2 * borda) + borda;
-        umItem = new ItemMapa(new Localizacao(alt, lar), 0,
+        umItem = new ItemMapa(new Localizacao(lar, alt), 0,
                 imagemCaminho);
         adicionarItem(umItem);
         ruas.add(umItem);
-        // System.out.println("1: " + alt + "," + lar + " ---- " + cont1);
+        System.out.println("1: " + lar + "," + alt + " ---- " + cont1);
 
         while (cont1 < max && loop1 < largura * altura * 10) {
-            // cont = 0;
+            cont = 0;
             umItem = ruas.get((int) Math.floor(Math.random() * ruas.size()));
-            alt = umItem.getLocalizacaoAtual().getX();
-            lar = umItem.getLocalizacaoAtual().getY();
+            lar = umItem.getLocalizacaoAtual().getX();
+            alt = umItem.getLocalizacaoAtual().getY();
             loop1++;
             loop = 0;
 
@@ -174,13 +138,13 @@ public class Mapa {
                     for (int u = 0; u < espacamento && cont1 < max; u++) {
                         if (alt > 0 + borda) {
                             alt -= 1;
-                            if (getItem(alt, lar) == null && verifica2Prox(0, alt, lar, -1, 0)) {
-                                umItem = new ItemMapa(new Localizacao(alt, lar), tipo, imagemCaminho);
+                            if (getItem(lar, alt) == null && verifica2Prox(0, lar, alt, -1, 0)) {
+                                umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                // cont++;
+                                cont++;
                                 cont1++;
-                                // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
+                                System.out.println(cont1 + ": " + cont + ": " + lar + "," + alt);
                             } else {
                                 alt += 1;
                             }
@@ -190,13 +154,13 @@ public class Mapa {
                     for (int u = 0; u < espacamento && cont1 < max; u++) {
                         if (lar > 0 + borda) {
                             lar -= 1;
-                            if (getItem(alt, lar) == null && verifica2Prox(0, alt, lar, 0, -1)) {
-                                umItem = new ItemMapa(new Localizacao(alt, lar), tipo, imagemCaminho);
+                            if (getItem(lar, alt) == null && verifica2Prox(0, lar, alt, 0, -1)) {
+                                umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                // cont++;
+                                cont++;
                                 cont1++;
-                                // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
+                                System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {
                                 lar += 1;
                             }
@@ -206,13 +170,13 @@ public class Mapa {
                     for (int u = 0; u < espacamento && cont1 < max; u++) {
                         if (alt < altura - 1 - borda) {
                             alt += 1;
-                            if (getItem(alt, lar) == null && verifica2Prox(0, alt, lar, +1, 0)) {
-                                umItem = new ItemMapa(new Localizacao(alt, lar), tipo, imagemCaminho);
+                            if (getItem(lar, alt) == null && verifica2Prox(0, lar, alt, +1, 0)) {
+                                umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                // cont++;
+                                cont++;
                                 cont1++;
-                                // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
+                                System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {
                                 alt -= 1;
                             }
@@ -222,13 +186,13 @@ public class Mapa {
                     for (int u = 0; u < espacamento && cont1 < max; u++) {
                         if (lar < largura - 1 - borda) {
                             lar += 1;
-                            if (getItem(alt, lar) == null && verifica2Prox(0, alt, lar, 0, -1)) {
-                                umItem = new ItemMapa(new Localizacao(alt, lar), tipo, imagemCaminho);
+                            if (getItem(lar, alt) == null && verifica2Prox(0, lar, alt, 0, -1)) {
+                                umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                // cont++;
+                                cont++;
                                 cont1++;
-                                // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
+                                System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {
                                 lar -= 1;
                             }
@@ -248,13 +212,13 @@ public class Mapa {
             x = rua.getLocalizacaoAtual().getX();
             y = rua.getLocalizacaoAtual().getY();
 
-            if (y < largura - 1) {
+            if (y < altura - 1) {
                 if (getItem(x, y + 1) == null) {
                     umItem = new ItemMapa(new Localizacao(x, y + 1), tipo, imagemCaminho);
                     adicionarItem(umItem);
                     calcada.add(umItem);
                 }
-                if (x < altura - 1) {
+                if (x < largura - 1) {
                     if (getItem(x + 1, y + 1) == null) {
                         umItem = new ItemMapa(new Localizacao(x + 1, y + 1), tipo, imagemCaminho);
                         adicionarItem(umItem);
@@ -275,7 +239,7 @@ public class Mapa {
                     adicionarItem(umItem);
                     calcada.add(umItem);
                 }
-                if (x < altura - 1) {
+                if (x < largura - 1) {
                     if (getItem(x + 1, y - 1) == null) {
                         umItem = new ItemMapa(new Localizacao(x + 1, y - 1), tipo, imagemCaminho);
                         adicionarItem(umItem);
@@ -290,7 +254,7 @@ public class Mapa {
                     }
                 }
             }
-            if (x < altura - 1) {
+            if (x < largura - 1) {
                 if (getItem(x + 1, y) == null) {
                     umItem = new ItemMapa(new Localizacao(x + 1, y), tipo, imagemCaminho);
                     adicionarItem(umItem);
@@ -316,7 +280,7 @@ public class Mapa {
             y = rua.getLocalizacaoAtual().getY();
             cruzamento = new ArrayList<ItemMapa>();
 
-            if (y < largura - 1) {
+            if (y < altura - 1) {
                 if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipoRua) {
                     cruzamento.add(getItem(x, y + 1));
                 }
@@ -326,7 +290,7 @@ public class Mapa {
                     cruzamento.add(getItem(x, y - 1));
                 }
             }
-            if (x < altura - 1) {
+            if (x < largura - 1) {
                 if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoRua) {
                     cruzamento.add(getItem(x + 1, y));
                 }
@@ -351,7 +315,7 @@ public class Mapa {
                     // System.out.println("tentando : " + ": " + x + "," + y);
 
                     if (verificaVizinho(tipo, x, y) == 0 && verificaVizinho(tipoRua, x, y) < 3) {
-                        if (y != largura - 1 && y != 0 && x != altura - 1 && x != 0) {
+                        if (y != altura - 1 && y != 0 && x != largura - 1 && x != 0) {
                             if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada
                                     && getItem(x - 1, y) != null && getItem(x - 1, y).getTipo() == tipoCalcada) {
                                 // System.out.println("sucesso x : " + ": " + x + "," + y);
@@ -384,7 +348,7 @@ public class Mapa {
             ItemMapa umItem = ruas.get((int) Math.floor(Math.random() * ruas.size()));
             x = umItem.getLocalizacaoAtual().getX();
             y = umItem.getLocalizacaoAtual().getY();
-            if (y != largura - 1 && y != 0 && x != altura - 1 && x != 0) {
+            if (y != altura - 1 && y != 0 && x != largura - 1 && x != 0) {
                 if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada && getItem(x - 1, y) != null
                         && getItem(x - 1, y).getTipo() == tipoCalcada) {
                     // System.out.println("sucesso x : " + ": " + x + "," + y);
@@ -409,8 +373,8 @@ public class Mapa {
 
     private void preencheEspaco(String imagemCaminho, int tipo) {
         ItemMapa umItem;
-        for (int i = 0; i < altura; i++) {
-            for (int j = 0; j < largura; j++) {
+        for (int i = 0; i < largura; i++) {
+            for (int j = 0; j < altura; j++) {
                 if (getItem(i, j) == null) {
                     umItem = new ItemMapa(new Localizacao(i, j), tipo, imagemCaminho);
                     adicionarItem(umItem);
@@ -421,7 +385,7 @@ public class Mapa {
 
     private int verificaVizinho(int tipo, int x, int y) {
         int retorno = 0;
-        if (y < largura - 1) {
+        if (y < altura - 1) {
             if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipo) {
                 retorno++;
             }
@@ -431,7 +395,7 @@ public class Mapa {
                 retorno++;
             }
         }
-        if (x < altura - 1) {
+        if (x < largura - 1) {
             if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipo) {
                 retorno++;
             }
@@ -447,14 +411,16 @@ public class Mapa {
 
     private boolean verifica2Prox(int tipo, int x, int y, int dirX, int dirY) {
         ItemMapa p;
-        if (dirX == 1 || dirX == -1) {
-            if (y < largura - 1) {
+        if (dirY == 1 || dirY == -1) {
+            if (y < altura - 1) {
                 p = getItem(x, y + 1);
                 if (p != null && p.getTipo() == tipo) {
+                    System.out.println("aqui 1");
                     return false;
-                } else if (y < largura - 2) {
+                } else if (y < altura - 2) {
                     p = getItem(x, y + 2);
                     if (p != null && p.getTipo() == tipo) {
+                        System.out.println("aqui 2");
                         return false;
                     }
                 }
@@ -462,24 +428,28 @@ public class Mapa {
             if (y > 0) {
                 p = getItem(x, y - 1);
                 if (p != null && p.getTipo() == tipo) {
+                    System.out.println("aqui 3");
                     return false;
                 } else if (y > 1) {
                     p = getItem(x, y - 2);
                     if (p != null && p.getTipo() == tipo) {
+                        System.out.println("aqui 4");
                         return false;
                     }
                 }
             }
 
         }
-        if (dirY == 1 || dirY == -1) {
-            if (x < altura - 1) {
+        if (dirX == 1 || dirX == -1) {
+            if (x < largura - 1) {
                 p = getItem(x + 1, y);
                 if (p != null && p.getTipo() == tipo) {
+                    System.out.println("aqui 5");
                     return false;
-                } else if (x < altura - 2) {
+                } else if (x < largura - 2) {
                     p = getItem(x + 2, y);
                     if (p != null && p.getTipo() == tipo) {
+                        System.out.println("aqui 6");
                         return false;
                     }
                 }
@@ -487,16 +457,18 @@ public class Mapa {
             if (x > 0) {
                 p = getItem(x - 1, y);
                 if (p != null && p.getTipo() == tipo) {
+                    System.out.println("aqui 7");
                     return false;
                 } else if (x > 1) {
                     p = getItem(x - 2, y);
                     if (p != null && p.getTipo() == tipo) {
+                        System.out.println("aqui 8");
                         return false;
                     }
                 }
             }
         }
-
+        System.out.println("aqui 9");
         return true;
     }
 

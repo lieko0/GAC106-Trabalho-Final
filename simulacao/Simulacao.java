@@ -19,7 +19,6 @@ public class Simulacao {
     public Simulacao() {
         // Random rand = new Random(345345684);
         mapa = new Mapa();
-
         // int largura = mapa.getLargura();
         // int altura = mapa.getAltura();
         // veiculo = new Veiculo(new Localizacao(rand.nextInt(largura),
@@ -31,6 +30,7 @@ public class Simulacao {
         // aleatoriamente
         // mapa.adicionarItem(veiculo);// Inicializando o mapa com o veículo
         mapa.gerarMapa();
+
         entidades = new Entidades(mapa);
         entidades.criarPopulacao();
 
@@ -108,7 +108,7 @@ public class Simulacao {
         janelaSimulacao.executarAcao();
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
-            esperar(1200);
+            esperar(500);
         }
     }
 

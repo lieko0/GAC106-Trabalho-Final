@@ -1,6 +1,7 @@
 package simulacao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Graph {
@@ -8,7 +9,7 @@ public class Graph {
     private int[][] adjacencyMatrix;
     private int tipo;
     private int tipoAlt;
-    private static final int NO_PARENT = 4;
+    private static final int NO_PARENT = -1;
     private List<Integer> caminho;
     private int altura;
     private int largura;
@@ -47,12 +48,13 @@ public class Graph {
     }
 
     public List<Integer> menosCaminho(int startVertex, int destino) {
-        caminho.clear();
+        this.caminho.clear();
         dijkstra(adjacencyMatrix, startVertex, destino);
         return caminho;
     }
 
     public List<Localizacao> menosCaminhoL(Localizacao origem, Localizacao destino) {
+        System.out.println("origem: " + origem + " destino: " + destino);
         List<Localizacao> loc = new ArrayList<Localizacao>();
         for (Integer i : menosCaminho(largura * origem.getY() + origem.getX(), largura *
                 destino.getY() + destino.getX())) {
@@ -134,7 +136,8 @@ public class Graph {
         }
 
         // printSolution(startVertex, shortestDistances, parents);
-        createPath(destino, parents);
+        if (destino != startVertex)
+            createPath(destino, parents);
     }
 
     private void createPath(int destino,
@@ -148,4 +151,5 @@ public class Graph {
         createPath(parents[destino], parents);
         caminho.add(destino);
     }
+
 }

@@ -33,7 +33,7 @@ public class Pessoa extends ItemDinamico {
 
     @Override
     public void setCaminho(List<Localizacao> caminho) {
-        this.caminho = caminho;
+        this.caminho = new ArrayList<Localizacao>(caminho);
         if (caminho.size() > 0)
             this.setComCaminho(true);
 
@@ -61,8 +61,4 @@ public class Pessoa extends ItemDinamico {
 
     }
 
-    @Override
-    public Pessoa clone() throws CloneNotSupportedException {
-        return (Pessoa) super.clone();
-    }
 }

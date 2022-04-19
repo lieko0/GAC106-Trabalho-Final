@@ -15,15 +15,25 @@ import java.util.List;
 public class Pessoa extends ItemDinamico {
 
     private List<Localizacao> caminho;
+    private boolean carregado;
 
     public Pessoa(Localizacao localizacao, int tipo, String path_imagem) {
         super(localizacao, tipo, path_imagem);
         this.caminho = new ArrayList<Localizacao>();
+        this.carregado = false;
     }
 
     public Pessoa(ItemDinamico itemDinamico) {
         super(itemDinamico.getLocalizacaoAtual(), itemDinamico.getTipo(), itemDinamico.getPath_imagem());
         this.caminho = new ArrayList<Localizacao>();
+    }
+
+    public boolean getCarregado() {
+        return carregado;
+    }
+
+    public void setCarregado(boolean carregado) {
+        this.carregado = carregado;
     }
 
     @Override
@@ -43,17 +53,17 @@ public class Pessoa extends ItemDinamico {
     public void mover() {
         if (caminho.size() > 0) {
             this.setLocalizacaoDestino(caminho.get(0));
-            System.out.print("\n old|>");
+            // System.out.print("\n old|>");
             for (Localizacao a : this.getCaminho()) {
-                System.out.print(" ->- " + a + " ");
+                // System.out.print(" ->- " + a + " ");
             }
-            System.out.print(" >|\n");
+            // System.out.print(" >|\n");
             caminho.remove(0);
-            System.out.print(" new|>");
+            // System.out.print(" new|>");
             for (Localizacao a : this.getCaminho()) {
-                System.out.print(" ->- " + a + " ");
+                // System.out.print(" ->- " + a + " ");
             }
-            System.out.print(" >|\n");
+            // System.out.print(" >|\n");
             this.executarAcao();
         } else {
             this.setComCaminho(false);

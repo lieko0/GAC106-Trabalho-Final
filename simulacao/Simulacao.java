@@ -49,9 +49,10 @@ public class Simulacao {
          * Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
          * .getLocalizacaoAtual();
          * 
-         * System.out.println("Pedestre\nOrigem: " + origem + " " + (largura *
+         * // System.out.println("Pedestre\nOrigem: " + origem + " " + (largura *
          * origem.getX() + origem.getY()));
-         * System.out.println("Destino: " + destino + " " + (largura * destino.getX() +
+         * // System.out.println("Destino: " + destino + " " + (largura * destino.getX()
+         * +
          * destino.getY()));
          */
 
@@ -59,12 +60,13 @@ public class Simulacao {
          * caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura *
          * destino.getX() + destino.getY()));
          * 
-         * System.out.print("|> ");
+         * // System.out.print("|> ");
          * for (Integer a : caminho) {
-         * System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " +
+         * // System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " "
+         * +
          * a);
          * }
-         * System.out.print(" >|\n");
+         * // System.out.print(" >|\n");
          */
         //
         //
@@ -79,9 +81,10 @@ public class Simulacao {
          * destino = mapa.getRuas().get((int) Math.floor(rand.nextDouble() *
          * mapa.getRuas().size())).getLocalizacaoAtual();
          * 
-         * System.out.println("\nVeiculo\nOrigem: " + origem + " " + (largura *
+         * // System.out.println("\nVeiculo\nOrigem: " + origem + " " + (largura *
          * origem.getX() + origem.getY()));
-         * System.out.println("Destino: " + destino + " " + (largura * destino.getX() +
+         * // System.out.println("Destino: " + destino + " " + (largura * destino.getX()
+         * +
          * destino.getY()));
          *//*
             * g = new Graph(altura, largura, mapa.getTipoRua(),
@@ -93,12 +96,13 @@ public class Simulacao {
          * caminho = g.menosCaminho(largura * origem.getX() + origem.getY(), (largura *
          * destino.getX() + destino.getY()));
          * 
-         * System.out.print("|> ");
+         * // System.out.print("|> ");
          * for (Integer a : caminho) {
-         * System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " " +
+         * // System.out.print(" ->- " + new Localizacao(a % largura, a / largura) + " "
+         * +
          * a);
          * }
-         * System.out.print(" >|\n");
+         * // System.out.print(" >|\n");
          */
         janelaSimulacao = new JanelaSimulacao(mapa, entidades);
     }
@@ -121,7 +125,7 @@ public class Simulacao {
         try {
             Thread.sleep(milisegundos);
         } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
         }
     }
 

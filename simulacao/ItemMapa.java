@@ -17,7 +17,7 @@ public class ItemMapa implements Item {
     public ItemMapa(Localizacao localizacao, int tipo, String path_imagem) {
         this.localizacaoAtual = localizacao;
         this.tipo = tipo;
-        // System.out.println(path_imagem);
+        // // System.out.println(path_imagem);
         imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();// Imagens/veiculo.jpg
     }
 

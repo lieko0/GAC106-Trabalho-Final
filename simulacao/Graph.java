@@ -11,8 +11,15 @@ public class Graph {
     private int tipoAlt;
     private static final int NO_PARENT = -1;
     private List<Integer> caminho;
-    private int altura;
+    // private int altura;
     private int largura;
+
+    // outofmemory
+    int nVertices;
+    private List<Localizacao> loc;
+    private int[] shortestDistances;
+    boolean[] added;
+    int[] parents;
 
     public Graph(int altura, int largura, int tipo, int tipoAlt) {
         adjacencyMatrix = new int[altura * largura][altura * largura];
@@ -21,11 +28,16 @@ public class Graph {
                 adjacencyMatrix[i][j] = 0;
             }
         }
-        this.altura = altura;
+        // this.altura = altura;
         this.largura = largura;
         this.tipo = tipo;
         this.tipoAlt = tipoAlt;
         this.caminho = new ArrayList<Integer>();
+
+        // outofmemory
+        this.nVertices = altura * largura;
+        this.loc = new ArrayList<Localizacao>();
+
     }
 
     public void criarGrafo(ItemMapa[][] itens, int altura, int largura) {
@@ -50,12 +62,14 @@ public class Graph {
     public List<Integer> menosCaminho(int startVertex, int destino) {
         this.caminho.clear();
         dijkstra(adjacencyMatrix, startVertex, destino);
+        if (this.caminho.size() > 0)
+            this.caminho.remove(0);
         return caminho;
     }
 
     public List<Localizacao> menosCaminhoL(Localizacao origem, Localizacao destino) {
-        System.out.println("origem: " + origem + " destino: " + destino);
-        List<Localizacao> loc = new ArrayList<Localizacao>();
+        loc.clear();
+        // System.out.println("origem: " + origem + " destino: " + destino);
         for (Integer i : menosCaminho(largura * origem.getY() + origem.getX(), largura *
                 destino.getY() + destino.getX())) {
             loc.add(new Localizacao(i % largura, i / largura));
@@ -65,17 +79,16 @@ public class Graph {
 
     private void dijkstra(int[][] adjacencyMatrix,
             int startVertex, int destino) {
-        int nVertices = adjacencyMatrix[0].length;
 
         // shortestDistances[i] will hold the
         // shortest distance from src to i
-        int[] shortestDistances = new int[nVertices];
+        shortestDistances = new int[nVertices];
 
         // added[i] will true if vertex i is
         // included / in shortest path tree
         // or shortest distance from src to
         // i is finalized
-        boolean[] added = new boolean[nVertices];
+        added = new boolean[nVertices];
 
         // Initialize all distances as
         // INFINITE and added[] as false
@@ -90,7 +103,7 @@ public class Graph {
 
         // Parent array to store shortest
         // path tree
-        int[] parents = new int[nVertices];
+        parents = new int[nVertices];
 
         // The starting vertex does not
         // have a parent
@@ -136,11 +149,13 @@ public class Graph {
         }
 
         // printSolution(startVertex, shortestDistances, parents);
-        if (destino != startVertex)
-            createPath(destino, parents);
+        if (destino != startVertex) {
+            createPathRec(destino, parents);
+        }
+
     }
 
-    private void createPath(int destino,
+    private void createPathRec(int destino,
             int[] parents) {
 
         // Base case : Source node has
@@ -148,8 +163,18 @@ public class Graph {
         if (destino == NO_PARENT) {
             return;
         }
-        createPath(parents[destino], parents);
+        createPathRec(parents[destino], parents);
+        // System.out.println(destino);
         caminho.add(destino);
+    }
+
+    private void createPathIt(int destino,
+            int[] parents) {
+        while (destino != NO_PARENT) {
+            caminho.add(destino);
+            destino = parents[destino];
+        }
+        Collections.reverse(caminho);
     }
 
 }

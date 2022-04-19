@@ -65,7 +65,7 @@ public abstract class ItemDinamico implements Item, Cloneable {
     }
 
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {
-        System.out.print(" {" + localizacaoAtual + "} ");
+        // System.out.print(" {" + localizacaoAtual + "} ");
         this.localizacaoAtual = localizacaoAtual;
     }
 
@@ -78,7 +78,7 @@ public abstract class ItemDinamico implements Item, Cloneable {
         if (destino != null) {
             Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
             setLocalizacaoAtual(proximaLocalizacao);
-            System.out.print(" {" + proximaLocalizacao + "} ");
+            // System.out.print(" {" + proximaLocalizacao + "} ");
         }
     }
 

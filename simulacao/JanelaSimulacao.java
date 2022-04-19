@@ -20,8 +20,9 @@ public class JanelaSimulacao extends JFrame {
         visaoMapa = new VisaoMapa(mapa.getLargura(), mapa.getAltura());
         getContentPane().add(visaoMapa);
         setTitle("Simulator");
-        float ratioAlt = 1500 * ((float) mapa.getAltura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
-        float ratioLar = 1500 * ((float) mapa.getLargura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
+        int tam = 2000;
+        float ratioAlt = tam * ((float) mapa.getAltura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
+        float ratioLar = tam * ((float) mapa.getLargura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
         setSize((int) ratioLar,
                 (int) ratioAlt);
         setVisible(true);
@@ -125,8 +126,8 @@ public class JanelaSimulacao extends JFrame {
                     xScale - 1, yScale - 1, this);
 
             // ********* debug grafo **********
-            g.drawString("(x" + x + ",y" + y + ")v" + (y * larguraMapa + x), x *
-                    xScale, y * yScale + 35);
+            // g.drawString("(x" + x + ",y" + y + ")v" + (y * larguraMapa + x), x *
+            // xScale, y * yScale + 35);
         }
 
         /**

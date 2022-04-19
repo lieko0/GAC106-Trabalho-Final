@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
  * 
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-public class ItemMapa implements Item {
+public class ItemMapa {
     private Localizacao localizacaoAtual;
     private Image imagem;
     private int tipo;

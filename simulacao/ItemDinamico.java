@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
  * 
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-public abstract class ItemDinamico implements Item, Cloneable {
+public abstract class ItemDinamico {
     private Localizacao localizacaoAtual;
     private Localizacao localizacaoDestino;
     private Image imagem;

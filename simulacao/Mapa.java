@@ -115,7 +115,7 @@ public class Mapa {
         // largura * altura);
         int alt = 0;
         int lar = 0;
-        int cont1 = 1, cont, loop, loop1 = 0;
+        int cont1 = 1, /* cont, */ loop, loop1 = 0;
         alt = rand.nextInt(altura - 2 * borda) + borda;
         lar = rand.nextInt(largura - 2 * borda) + borda;
         umItem = new ItemMapa(new Localizacao(lar, alt), 0,
@@ -125,7 +125,7 @@ public class Mapa {
         // // System.out.println("1: " + lar + "," + alt + " ---- " + cont1);
 
         while (cont1 < max && loop1 < largura * altura * 10) {
-            cont = 0;
+            // cont = 0;
             umItem = ruas.get((int) Math.floor(Math.random() * ruas.size()));
             lar = umItem.getLocalizacaoAtual().getX();
             alt = umItem.getLocalizacaoAtual().getY();
@@ -142,7 +142,7 @@ public class Mapa {
                                 umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                cont++;
+                                // cont++;
                                 cont1++;
                                 // // System.out.println(cont1 + ": " + cont + ": " + lar + "," + alt);
                             } else {
@@ -158,7 +158,7 @@ public class Mapa {
                                 umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                cont++;
+                                // cont++;
                                 cont1++;
                                 // // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {
@@ -174,7 +174,7 @@ public class Mapa {
                                 umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                cont++;
+                                // cont++;
                                 cont1++;
                                 // // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {
@@ -190,7 +190,7 @@ public class Mapa {
                                 umItem = new ItemMapa(new Localizacao(lar, alt), tipo, imagemCaminho);
                                 adicionarItem(umItem);
                                 ruas.add(umItem);
-                                cont++;
+                                // cont++;
                                 cont1++;
                                 // // System.out.println(cont1 + ": " + cont + ": " + alt + "," + lar);
                             } else {

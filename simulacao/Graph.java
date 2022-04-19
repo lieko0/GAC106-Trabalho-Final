@@ -1,7 +1,7 @@
 package simulacao;
 
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 
 public class Graph {
@@ -167,14 +167,15 @@ public class Graph {
         // System.out.println(destino);
         caminho.add(destino);
     }
-
-    private void createPathIt(int destino,
-            int[] parents) {
-        while (destino != NO_PARENT) {
-            caminho.add(destino);
-            destino = parents[destino];
-        }
-        Collections.reverse(caminho);
-    }
+    /*
+     * private void createPathIt(int destino,
+     * int[] parents) {
+     * while (destino != NO_PARENT) {
+     * caminho.add(destino);
+     * destino = parents[destino];
+     * }
+     * Collections.reverse(caminho);
+     * }
+     */
 
 }

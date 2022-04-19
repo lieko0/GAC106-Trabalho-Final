@@ -54,15 +54,15 @@ public class Pessoa extends ItemDinamico {
         if (caminho.size() > 0) {
             this.setLocalizacaoDestino(caminho.get(0));
             // System.out.print("\n old|>");
-            for (Localizacao a : this.getCaminho()) {
-                // System.out.print(" ->- " + a + " ");
-            }
+            // for (Localizacao a : this.getCaminho()) {
+            // System.out.print(" ->- " + a + " ");
+            // }
             // System.out.print(" >|\n");
             caminho.remove(0);
             // System.out.print(" new|>");
-            for (Localizacao a : this.getCaminho()) {
-                // System.out.print(" ->- " + a + " ");
-            }
+            // for (Localizacao a : this.getCaminho()) {
+            // System.out.print(" ->- " + a + " ");
+            // }
             // System.out.print(" >|\n");
             this.executarAcao();
         } else {

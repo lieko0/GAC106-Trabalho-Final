@@ -78,9 +78,9 @@ public class Entidades {
         // // System.out.print(" ^{" + destino + "}^ ");
         p.setCaminho(calcadaGraph.menosCaminhoL(p.getLocalizacaoAtual(), destino));
         // // System.out.print("\n |>");
-        for (Localizacao a : p.getCaminho()) {
-            // // System.out.print(" ->- " + a + " ");
-        }
+        // for (Localizacao a : p.getCaminho()) {
+        // // System.out.print(" ->- " + a + " ");
+        // }
         todasEntidades.add(p);
         populacao.add(p);
         // // System.out.print(" >|\n");
@@ -98,9 +98,9 @@ public class Entidades {
         // // System.out.print(" ^{" + destino + "}^ ");
         v.setCaminho(ruaGraph.menosCaminhoL(v.getLocalizacaoAtual(), destino));
         // // System.out.print("\n |>");
-        for (Localizacao a : v.getCaminho()) {
-            // // System.out.print(" ->- " + a + " ");
-        }
+        // for (Localizacao a : v.getCaminho()) {
+        // // System.out.print(" ->- " + a + " ");
+        // }
         todasEntidades.add(v);
         frota.add(v);
         // // System.out.print(" >|\n");

@@ -20,7 +20,7 @@ public class JanelaSimulacao extends JFrame {
         visaoMapa = new VisaoMapa(mapa.getLargura(), mapa.getAltura());
         getContentPane().add(visaoMapa);
         setTitle("Simulator");
-        int tam = 2000;
+        int tam = 1500;
         float ratioAlt = tam * ((float) mapa.getAltura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
         float ratioLar = tam * ((float) mapa.getLargura() / ((float) mapa.getLargura() + (float) mapa.getAltura()));
         setSize((int) ratioLar,

@@ -61,9 +61,13 @@ public class Veiculo extends ItemDinamico {
 
     @Override
     public void setCaminho(List<Localizacao> caminho) {
-        this.caminho = new ArrayList<Localizacao>(caminho);
-        if (caminho.size() > 0)
+
+        if (caminho.size() == 0)
+            this.setComCaminho(false);
+        else {
+            this.caminho = new ArrayList<Localizacao>(caminho);
             this.setComCaminho(true);
+        }
 
     }
 
@@ -76,12 +80,12 @@ public class Veiculo extends ItemDinamico {
             // System.out.print(" ->- " + a + " ");
             // }
             // System.out.print(" >|\n");
-            caminho.remove(0);
             // System.out.print(" new|>");
             // for (Localizacao a : this.getCaminho()) {
             // System.out.print(" ->- " + a + " ");
             // }
             // System.out.print(" >|\n");
+            caminho.remove(0);
             this.executarAcao();
         } else {
             this.setComCaminho(false);

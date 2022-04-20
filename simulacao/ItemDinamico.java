@@ -26,6 +26,7 @@ public abstract class ItemDinamico {
         this.path_imagem = path_imagem;
         imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();// Imagens/veiculo.jpg
         this.moveu = false;
+        this.comCaminho = false;
     }
 
     public int getTipo() {
@@ -88,8 +89,4 @@ public abstract class ItemDinamico {
 
     public abstract void setCaminho(List<Localizacao> caminho);
 
-    @Override
-    public ItemDinamico clone() throws CloneNotSupportedException {
-        return (ItemDinamico) super.clone();
-    }
 }

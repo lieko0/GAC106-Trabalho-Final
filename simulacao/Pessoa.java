@@ -43,9 +43,12 @@ public class Pessoa extends ItemDinamico {
 
     @Override
     public void setCaminho(List<Localizacao> caminho) {
-        this.caminho = new ArrayList<Localizacao>(caminho);
-        if (caminho.size() > 0)
+        if (caminho.size() == 0)
+            this.setComCaminho(false);
+        else {
+            this.caminho = new ArrayList<Localizacao>(caminho);
             this.setComCaminho(true);
+        }
 
     }
 

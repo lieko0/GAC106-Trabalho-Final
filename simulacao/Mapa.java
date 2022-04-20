@@ -77,19 +77,23 @@ public class Mapa {
     }
 
     public void gerarMapa() {
+        System.out.println("Começando a geração de mapa ...");
+        System.out.println("Gerando ruas ...");
         // Configurações da geração de rua
-        int quantidadeRuas = (int) (altura * largura * 0.6); // Numero de blocos do tipo rua
-        int espacamento = 1; // Tendência de tamanho das ruas (>=1) quando maior, menos denso será o mapa
-        int borda = 1; // Espaço minimo entre qualquer bloco de rua e a borda (preferencialmetne >=1)
+        int quantidadeRuas = (int) (altura * largura * 0.2); // Numero de blocos do tipo rua
+        int espacamento = 1; // Tendência de tamanho das ruas (>=1) quando maior, menos esquinas o mapa terá
+        int borda = 1; // Espaço minimo entre qualquer bloco de rua e a borda ( >=1)
         // int tipoRua = 0; // ID do bloco de rua
         String imagemRua = "Imagens/rua.jpg"; // Imagem do bloco de rua
         gerarRuas(quantidadeRuas, espacamento, borda, imagemRua, tipoRua);
+        System.out.println("Gerando calcadas ...");
 
         // Configurações da geração de calcadas (sempre gerada 1 bloco ao redor das
         // ruas)
         // int tipoCalcada = 1; // ID do bloco de calcada
         String imagemCalcada = "Imagens/calcada.jpg"; // Imagem do bloco de calcada
         gerarCalcada(imagemCalcada, tipoCalcada);
+        System.out.println("Gerando faixas de pedestre ...");
 
         // Configurações da geração de calcadas (sempre gerada em qualquer cruzamento de
         // ruas)
@@ -99,7 +103,7 @@ public class Mapa {
         String imagemFaixaPedestreFlip = "Imagens/faixa_alt.jpg"; // Imagem do bloco de faixa (vertical)
         gerarFaixaPedestre(tipoRua, tipoCalcada, imagemFaixaPedestre,
                 imagemFaixaPedestreFlip, tipoFaixaPedestre);
-
+        System.out.println("Preenchendo espaço vazio do mapa ...");
         // Configurações da geração do resto do mapa (área que não for preenchida pelos
         // outros blocos)
         int tipoPreenchimento = 3; // ID do bloco de faixa de pedestre
@@ -126,7 +130,7 @@ public class Mapa {
 
         while (cont1 < max && loop1 < largura * altura * 10) {
             // cont = 0;
-            umItem = ruas.get((int) Math.floor(Math.random() * ruas.size()));
+            umItem = ruas.get((int) Math.floor(rand.nextDouble() * ruas.size()));
             lar = umItem.getLocalizacaoAtual().getX();
             alt = umItem.getLocalizacaoAtual().getY();
             loop1++;
@@ -344,34 +348,43 @@ public class Mapa {
         }
 
         if (faixa.isEmpty() == true) { // exceção
-
-            ItemMapa umItem = ruas.get((int) Math.floor(Math.random() * ruas.size()));
-            x = umItem.getLocalizacaoAtual().getX();
-            y = umItem.getLocalizacaoAtual().getY();
-            if (y != altura - 1 && y != 0 && x != largura - 1 && x != 0) {
-                if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada && getItem(x - 1, y) != null
-                        && getItem(x - 1, y).getTipo() == tipoCalcada) {
-                    // // System.out.println("sucesso x : " + ": " + x + "," + y);
-                    removerItem(umItem);
-                    ruas.remove(umItem);
-                    umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminhoAlt);
-                    adicionarItem(umItem);
-                    ruas.add(umItem);
-                    faixa.add(umItem);
-                    calcada.add(umItem);
+            boolean peloMenosUm = false;
+            ItemMapa umItem;
+            int loop = 0;
+            while (!peloMenosUm && loop < altura * largura) {
+                umItem = ruas.get((int) Math.floor(rand.nextDouble() * ruas.size()));
+                x = umItem.getLocalizacaoAtual().getX();
+                y = umItem.getLocalizacaoAtual().getY();
+                if (y != altura - 1 && y != 0 && x != largura - 1 && x != 0) {
+                    if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada
+                            && getItem(x - 1, y) != null
+                            && getItem(x - 1, y).getTipo() == tipoCalcada) {
+                        // // System.out.println("sucesso x : " + ": " + x + "," + y);
+                        removerItem(umItem);
+                        ruas.remove(umItem);
+                        umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminhoAlt);
+                        adicionarItem(umItem);
+                        ruas.add(umItem);
+                        faixa.add(umItem);
+                        calcada.add(umItem);
+                        peloMenosUm = true;
+                    }
+                    if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipoCalcada
+                            && getItem(x, y - 1) != null && getItem(x, y - 1).getTipo() == tipoCalcada) {
+                        // // System.out.println("sucesso y : " + ": " + x + "," + y);
+                        removerItem(umItem);
+                        ruas.remove(umItem);
+                        umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminho);
+                        ruas.add(umItem);
+                        adicionarItem(umItem);
+                        faixa.add(umItem);
+                        calcada.add(umItem);
+                        peloMenosUm = true;
+                    }
                 }
-                if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipoCalcada
-                        && getItem(x, y - 1) != null && getItem(x, y - 1).getTipo() == tipoCalcada) {
-                    // // System.out.println("sucesso y : " + ": " + x + "," + y);
-                    removerItem(umItem);
-                    ruas.remove(umItem);
-                    umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminho);
-                    ruas.add(umItem);
-                    adicionarItem(umItem);
-                    faixa.add(umItem);
-                    calcada.add(umItem);
-                }
+                loop++;
             }
+
         }
     }
 

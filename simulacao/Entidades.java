@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 public class Entidades {
-    Mapa mapa;
+    private Mapa mapa;
     private List<ItemDinamico> todasEntidades;
-    private List<ItemDinamico> populacao;
-    private List<ItemDinamico> frota;
+    private List<Pessoa> populacao;
+    private List<Veiculo> frota;
 
     private int largura;
     private int altura;
@@ -16,8 +16,8 @@ public class Entidades {
     private Graph ruaGraph;
     private Graph calcadaGraph;
 
-    // private List<Chamado> chamados;
-    boolean chamadoAberto;
+    private List<Chamado> chamados;
+    private boolean chamadoAberto;
 
     public Entidades(Mapa mapa) {
         this.altura = mapa.getAltura();
@@ -26,10 +26,10 @@ public class Entidades {
         this.mapa = mapa;
 
         this.todasEntidades = new ArrayList<ItemDinamico>();
-        this.populacao = new ArrayList<ItemDinamico>();
-        this.frota = new ArrayList<ItemDinamico>();
+        this.populacao = new ArrayList<Pessoa>();
+        this.frota = new ArrayList<Veiculo>();
 
-        // this.chamados = new ArrayList<Chamado>();
+        this.chamados = new ArrayList<Chamado>();
         chamadoAberto = false;
         System.out.println("Gerando grafos ...");
         this.ruaGraph = new Graph(altura, largura, mapa.getTipoRua(),
@@ -42,19 +42,21 @@ public class Entidades {
 
     public void criarPopulacao() {
         System.out.println("Gerando entidades ...");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 1; i++) {
             if (i % 3 == 0) {
-                this.adicionarPessoa("Imagens/pessoaNS_1.png", "Imagens/pessoaLO_1.png");
+                this.adicionarPessoa("Imagens/pessoaNS_1.png", "Imagens/pessoaLO_1.png", "Imagens/pessoaChamado_1.png");
             } else if (i % 3 == 1) {
-                this.adicionarPessoa("Imagens/pessoaNS_2.png", "Imagens/pessoaLO_2.png");
+                this.adicionarPessoa("Imagens/pessoaNS_2.png", "Imagens/pessoaLO_2.png", "Imagens/pessoaChamado_2.png");
             } else {
-                this.adicionarPessoa("Imagens/pessoaNS_3.png", "Imagens/pessoaLO_3.png");
+                this.adicionarPessoa("Imagens/pessoaNS_3.png", "Imagens/pessoaLO_3.png", "Imagens/pessoaChamado_3.png");
             }
 
         }
         for (int i = 0; i < 10; i++) {
 
-            this.adicionarVeiculo("Imagens/motoN.png", "Imagens/motoS.png", "Imagens/motoL.png", "Imagens/motoO.png");
+            this.adicionarVeiculo("Imagens/motoN.png", "Imagens/motoS.png", "Imagens/motoL.png", "Imagens/motoO.png",
+                    "Imagens/motoN_passageiro.png", "Imagens/motoS_passageiro.png", "Imagens/motoL_passageiro.png",
+                    "Imagens/motoO_passageiro.png");
 
         }
 
@@ -65,7 +67,7 @@ public class Entidades {
      * }
      */
 
-    private void adicionarPessoa(String path_imagemNS, String path_imagemLO) {
+    private void adicionarPessoa(String path_imagemNS, String path_imagemLO, String path_imagemChamado) {
 
         ItemMapa umItem = mapa.getCalcada().get((int) Math.floor(Math.random() *
                 mapa.getCalcada().size()));
@@ -74,7 +76,7 @@ public class Entidades {
         Localizacao localizacao = umItem.getLocalizacaoAtual();
         // // System.out.print(" ~{" + localizacao + "}~ ");
         int tipo = mapa.getTipoCalcada();
-        ItemDinamico p = new Pessoa(localizacao, tipo, path_imagemNS, path_imagemLO);
+        Pessoa p = new Pessoa(localizacao, tipo, path_imagemNS, path_imagemLO, path_imagemChamado);
 
         Localizacao destino = mapa.getCalcada().get((int) Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
                 .getLocalizacaoAtual();
@@ -92,12 +94,15 @@ public class Entidades {
     }
 
     private void adicionarVeiculo(String path_imagemN, String path_imagemS, String path_imagemL,
-            String path_imagemO) {
+            String path_imagemO, String path_imagemN_carregando, String path_imagemS_carregando,
+            String path_imagemL_carregando,
+            String path_imagemO_carregando) {
         ItemMapa umItem = mapa.getRuas().get((int) Math.floor(Math.random() * mapa.getRuas().size()));
         Localizacao localizacao = umItem.getLocalizacaoAtual();
         // // System.out.print(" ~{" + localizacao + "}~ ");
         int tipo = mapa.getTipoRua();
-        ItemDinamico v = new Veiculo(localizacao, tipo, path_imagemN, path_imagemS, path_imagemL, path_imagemO);
+        Veiculo v = new Veiculo(localizacao, tipo, path_imagemN, path_imagemS, path_imagemL, path_imagemO,
+                path_imagemN_carregando, path_imagemS_carregando, path_imagemL_carregando, path_imagemO_carregando);
 
         Localizacao destino = mapa.getRuas().get((int) Math.floor(rand.nextDouble() * mapa.getRuas().size()))
                 .getLocalizacaoAtual();
@@ -116,28 +121,35 @@ public class Entidades {
         return todasEntidades;
     }
 
-    public List<ItemDinamico> getFrota() {
+    public List<Veiculo> getFrota() {
         return frota;
     }
 
-    public List<ItemDinamico> getPopulacao() {
+    public List<Pessoa> getPopulacao() {
         return populacao;
     }
 
     public void executar() {
 
-        for (ItemDinamico p : this.getPopulacao()) {
+        for (Pessoa p : this.getPopulacao()) {
             int indexE = todasEntidades.indexOf(p);
             int indexP = populacao.indexOf(p);
-            if (!p.getComCaminho()) {
+            if (!p.getComCaminho() && p.getChamadoAtivo() != true) {
 
-                // int choice = rand.nextInt(2);
+                int choice = rand.nextInt(10);
                 Localizacao destino = mapa.getCalcada()
                         .get((int) Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
                         .getLocalizacaoAtual();
+                if (choice == 0 && mapa.getItem(p.getLocalizacaoAtual().getX(), p.getLocalizacaoAtual().getY())
+                        .getTipo() != mapa.getTipoFaixaPedestre() && mapa.getItem(destino.getX(), destino.getY())
+                                .getTipo() != mapa.getTipoFaixaPedestre()) {
+                    this.chamados.add(new Chamado(indexP, indexE, p.getLocalizacaoAtual(), destino));
+                    chamadoAberto = true;
+                    p.setChamadoAtivo(true);
 
-                // // System.out.print(" ^{" + destino + "}^ ");
-                p.setCaminho(calcadaGraph.menosCaminhoL(p.getLocalizacaoAtual(), destino));
+                } else {
+                    p.setCaminho(calcadaGraph.menosCaminhoL(p.getLocalizacaoAtual(), destino));
+                }
 
             }
             boolean impedimento = false;
@@ -171,13 +183,53 @@ public class Entidades {
 
         }
 
-        for (ItemDinamico v : this.getFrota()) {
+        for (Veiculo v : this.getFrota()) {
             // System.out.print(" ^{" + v.getComCaminho() + "}^ ");
             int indexE = todasEntidades.indexOf(v);
             int indexF = frota.indexOf(v);
-            if (!v.getComCaminho()) {
+            if (v.getComChamado() && !v.getIndoChamado() && !v.getCarregando()) {
 
-                if (chamadoAberto) {
+                v.setCaminho(ruaGraph.menosCaminhoL(v.getLocalizacaoAtual(), mapa.ruaProx(v.getChamado().getInicio())));
+                v.setIndoChamado(true);
+
+            } else if (v.getComChamado() && v.getIndoChamado()) {
+                if (v.getLocalizacaoAtual().equals(mapa.ruaProx(v.getChamado().getInicio()))) {
+
+                    v.setCarregando(true);
+                    Pessoa pp = populacao.get(v.getChamado().getIndexPessoaPop());
+                    pp.setCarregado(true);
+                    this.todasEntidades.set(v.getChamado().getIndexPessoaTot(), pp);
+                    this.populacao.set(v.getChamado().getIndexPessoaPop(), pp);
+                    v.setCaminho(
+                            ruaGraph.menosCaminhoL(v.getLocalizacaoAtual(), mapa.ruaProx(v.getChamado().getDestino())));
+                    v.setIndoChamado(false);
+
+                }
+
+            } else if (v.getComChamado() && !v.getIndoChamado() && v.getCarregando()) {
+                if (v.getLocalizacaoAtual().equals(mapa.ruaProx(v.getChamado().getDestino()))) {
+
+                    v.setCarregando(false);
+                    v.setComChamado(false);
+
+                    Pessoa pp = populacao.get(v.getChamado().getIndexPessoaPop());
+                    pp.setLocalizacaoAtual(v.getChamado().getDestino());
+                    pp.setCarregado(false);
+                    pp.setChamadoAtivo(false);
+                    this.todasEntidades.set(v.getChamado().getIndexPessoaTot(), pp);
+                    this.populacao.set(v.getChamado().getIndexPessoaPop(), pp);
+                    v.setChamado(null);
+                }
+
+            } else if (!v.getComCaminho()) {
+
+                if (chamadoAberto && mapa.getItem(v.getLocalizacaoAtual().getX(), v.getLocalizacaoAtual().getY())
+                        .getTipo() != mapa.getTipoFaixaPedestre()) {
+                    v.setChamado(chamados.get(0));
+                    v.setComChamado(true);
+                    chamados.remove(0);
+                    if (chamados.size() == 0)
+                        chamadoAberto = false;
 
                 } else {
                     Localizacao destino = mapa.getRuas()

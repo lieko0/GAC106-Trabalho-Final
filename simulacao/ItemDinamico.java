@@ -18,14 +18,14 @@ public abstract class ItemDinamico {
     private String path_imagem;
     private int tipo;
     private boolean comCaminho;
-    private boolean moveu;
+    private boolean visivel;
 
     public ItemDinamico(Localizacao localizacao, int tipo, String path_imagem) {
         this.localizacaoAtual = localizacao;
         this.tipo = tipo;
         this.path_imagem = path_imagem;
         imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();// Imagens/veiculo.jpg
-        this.moveu = false;
+        this.visivel = true;
         this.comCaminho = false;
     }
 
@@ -58,16 +58,16 @@ public abstract class ItemDinamico {
         return comCaminho;
     }
 
-    public boolean getMoveu() {
-        return moveu;
+    public boolean getVisivel() {
+        return visivel;
     }
 
     public void setComCaminho(boolean comCaminho) {
         this.comCaminho = comCaminho;
     }
 
-    public void setMoveu(boolean moveu) {
-        this.moveu = moveu;
+    public void setVisivel(boolean visivel) {
+        this.visivel = visivel;
     }
 
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {

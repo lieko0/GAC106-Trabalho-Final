@@ -16,8 +16,8 @@ public class Mapa {
     private int altura;
     private static Random rand = new Random();
 
-    private static final int LARGURA_PADRAO = 20;
-    private static final int ALTURA_PADRAO = 20;
+    private static final int LARGURA_PADRAO = 15;
+    private static final int ALTURA_PADRAO = 10;
     private List<ItemMapa> ruas;
     private List<ItemMapa> calcada;
     private List<ItemMapa> faixa;
@@ -650,6 +650,103 @@ public class Mapa {
         }
         // // System.out.println("aqui 9");
         return true;
+    }
+
+    public Localizacao ruaProx(Localizacao calcada) {
+        int x = calcada.getX();
+        int y = calcada.getY();
+        if (x + 1 < largura && (this.getItem(x + 1, y)
+                .getTipo() == tipoRua
+                || this.getItem(x + 1, y)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x + 1, y)
+                    .getLocalizacaoAtual();
+        } else if (y + 1 < altura && (this.getItem(x, y + 1)
+                .getTipo() == tipoRua
+                || this.getItem(x, y + 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && (this.getItem(x - 1, y)
+                .getTipo() == tipoRua
+                || this.getItem(x - 1, y)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x - 1, y)
+                    .getLocalizacaoAtual();
+        } else if (y - 1 > 0 && (this.getItem(x, y - 1)
+                .getTipo() == tipoRua
+                || this.getItem(x, y - 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x, y - 1)
+                    .getLocalizacaoAtual();
+        } else if (x + 1 < largura && y + 1 < altura && (this.getItem(x + 1, y + 1)
+                .getTipo() == tipoRua
+                || this.getItem(x + 1, y + 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x + 1, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && y + 1 < altura && (this.getItem(x - 1, y + 1)
+                .getTipo() == tipoRua
+                || this.getItem(x - 1, y + 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x - 1, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && y - 1 > 0 && (this.getItem(x - 1, y - 1)
+                .getTipo() == tipoRua
+                || this.getItem(x - 1, y - 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x - 1, y - 1)
+                    .getLocalizacaoAtual();
+        } else if (x + 1 < largura && y - 1 > 0 && (this.getItem(x + 1, y - 1)
+                .getTipo() == tipoRua && y - 1 > 0 || this.getItem(x + 1, y - 1)
+                        .getTipo() == tipoFaixaPedestre)) {
+            return getItem(x + 1, y - 1)
+                    .getLocalizacaoAtual();
+        } else {
+            return null;
+        }
+
+    }
+
+    public Localizacao calcadaProx(Localizacao rua) {
+        int x = rua.getX();
+        int y = rua.getY();
+        if (x + 1 < largura && this.getItem(x + 1, y)
+                .getTipo() == tipoCalcada) {
+            return getItem(x + 1, y)
+                    .getLocalizacaoAtual();
+        } else if (y + 1 < altura && this.getItem(x, y + 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && this.getItem(x - 1, y)
+                .getTipo() == tipoCalcada) {
+            return getItem(x - 1, y)
+                    .getLocalizacaoAtual();
+        } else if (y - 1 > 0 && this.getItem(x, y - 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x, y - 1)
+                    .getLocalizacaoAtual();
+        } else if (x + 1 < largura && y + 1 < altura && this.getItem(x + 1, y + 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x + 1, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && y + 1 < altura && this.getItem(x - 1, y + 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x - 1, y + 1)
+                    .getLocalizacaoAtual();
+        } else if (x - 1 > 0 && y - 1 > 0 && this.getItem(x - 1, y - 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x - 1, y - 1)
+                    .getLocalizacaoAtual();
+        } else if (x + 1 < largura && y - 1 > 0 && this.getItem(x + 1, y - 1)
+                .getTipo() == tipoCalcada) {
+            return getItem(x + 1, y - 1)
+                    .getLocalizacaoAtual();
+        } else {
+            return null;
+        }
+
     }
 
     public void adicionarItem(ItemMapa v) {

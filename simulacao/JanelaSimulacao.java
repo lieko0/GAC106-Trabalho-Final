@@ -49,7 +49,8 @@ public class JanelaSimulacao extends JFrame {
             }
         }
         for (ItemDinamico d : entidades.getTodasEntidades()) {
-            visaoMapa.desenharImagem(d.getLocalizacaoAtual().getY(), d.getLocalizacaoAtual().getX(), d.getImagem());
+            if (d.getVisivel())
+                visaoMapa.desenharImagem(d.getLocalizacaoAtual().getY(), d.getLocalizacaoAtual().getX(), d.getImagem());
         }
         for (ItemMapa s : mapa.getSemaforo()) {
             visaoMapa.desenharImagem(s.getLocalizacaoAtual().getY(), s.getLocalizacaoAtual().getX(), s.getImagem());

@@ -1,6 +1,5 @@
 package simulacao;
 
-//package simulacao;
 /**
  * TP 03: Tema do trabalho prático
  * Veículos em circulação na área demarcada: motos.
@@ -10,10 +9,7 @@ package simulacao;
  * um único item num ponto de origem e deixá-lo num ponto de destino.
  * 
  * 
- * 
- * 
- * 
- * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author Luiz Merschmann
  */
 public class Principal {

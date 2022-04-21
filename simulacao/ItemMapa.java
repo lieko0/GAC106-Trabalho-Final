@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 /**
  * Representa os da simulacao.
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class ItemMapa {
@@ -19,8 +20,7 @@ public class ItemMapa {
         this.localizacaoAtual = localizacao;
         this.tipo = tipo;
         this.path_imagem = path_imagem;
-        // // System.out.println(path_imagem);
-        imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();// Imagens/veiculo.jpg
+        imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();
     }
 
     public Localizacao getLocalizacaoAtual() {

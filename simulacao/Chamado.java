@@ -1,11 +1,27 @@
 package simulacao;
 
+/**
+ * Representa os chamados de viagens, em que uma pessoa é levada por uma moto.
+ * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
+ * 
+ */
 public class Chamado {
     private int indexPessoaPop;
     private int indexPessoaTot;
     private Localizacao inicio;
     private Localizacao destino;
 
+    /**
+     * Instanciando um chamado
+     * 
+     * @param indexPessoaPop : index da pessoa que fez o chamado (referente ao vetor
+     *                       de populacao)
+     * @param indexPessoaTot : index da pessoa que fez o chamado (referente ao vetor
+     *                       de todasEntidades)
+     * @param inicio         : localizacao inicial da pessoa que fez o chamado
+     * @param destino        : localização de destino da pessoa que fez o chamado
+     */
     public Chamado(int indexPessoaPop, int indexPessoaTot, Localizacao inicio, Localizacao destino) {
         this.indexPessoaPop = indexPessoaPop;
         this.indexPessoaTot = indexPessoaTot;

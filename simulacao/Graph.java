@@ -1,9 +1,15 @@
 package simulacao;
 
 import java.util.ArrayList;
-//import java.util.Collections;
+
 import java.util.List;
 
+/**
+ * Representa os grafos da simulacao.
+ * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
+ * 
+ */
 public class Graph {
 
     private int[][] adjacencyMatrix;
@@ -11,16 +17,19 @@ public class Graph {
     private int tipoAlt;
     private static final int NO_PARENT = -1;
     private List<Integer> caminho;
-    // private int altura;
     private int largura;
 
     // outofmemory
-    int nVertices;
+    private int nVertices;
     private List<Localizacao> loc;
     private int[] shortestDistances;
-    boolean[] added;
-    int[] parents;
+    private boolean[] added;
+    private int[] parents;
 
+    /**
+     * 
+     * Intancia Grafo
+     */
     public Graph(int altura, int largura, int tipo, int tipoAlt) {
         adjacencyMatrix = new int[altura * largura][altura * largura];
         for (int i = 0; i < altura * largura; i++) {
@@ -40,6 +49,10 @@ public class Graph {
 
     }
 
+    /**
+     * 
+     * Cria um grafo baseado nos tipos de parâmetro
+     */
     public void criarGrafo(ItemMapa[][] itens, int altura, int largura) {
         for (int i = 0; i < largura; i++) {
             for (int j = 0; j < altura; j++) {
@@ -59,7 +72,11 @@ public class Graph {
         }
     }
 
-    public List<Integer> menosCaminho(int startVertex, int destino) {
+    /**
+     * 
+     * Retorna o menor caminho entre os dois vertices
+     */
+    private List<Integer> menosCaminho(int startVertex, int destino) {
         this.caminho.clear();
         dijkstra(adjacencyMatrix, startVertex, destino);
         if (this.caminho.size() > 0)
@@ -67,6 +84,11 @@ public class Graph {
         return caminho;
     }
 
+    /**
+     * 
+     * 
+     * Retorna o menor caminho entre as duas localizações
+     */
     public List<Localizacao> menosCaminhoL(Localizacao origem, Localizacao destino) {
         loc.clear();
         // System.out.println("origem: " + origem + " destino: " + destino);
@@ -77,6 +99,10 @@ public class Graph {
         return loc;
     }
 
+    /**
+     * 
+     * Algoritimo de dijktra usado na obtenção do menor caminho
+     */
     private void dijkstra(int[][] adjacencyMatrix,
             int startVertex, int destino) {
 
@@ -155,6 +181,10 @@ public class Graph {
 
     }
 
+    /**
+     * 
+     * Cria o caminho baseado nas interações realizadas no algoritmo de dijkstra
+     */
     private void createPathRec(int destino,
             int[] parents) {
 

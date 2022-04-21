@@ -1,28 +1,22 @@
 package simulacao;
-//package simulacao;
-
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Random;
 
 /**
  * Responsavel pela simulacao.
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Simulacao {
-    // private Veiculo veiculo;
     private JanelaSimulacao janelaSimulacao;
     private Mapa mapa;
     private Entidades entidades;
 
     public Simulacao() {
-        // Random rand = new Random(345345684);
         mapa = new Mapa();
         mapa.gerarMapa();
 
         entidades = new Entidades(mapa);
-        entidades.criarPopulacao();
+        entidades.criarPopulacao(3, 3);
         janelaSimulacao = new JanelaSimulacao(mapa, entidades);
     }
 
@@ -31,7 +25,7 @@ public class Simulacao {
         janelaSimulacao.executarAcao();
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
-            esperar(500);
+            esperar(600);
         }
     }
 

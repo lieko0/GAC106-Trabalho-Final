@@ -1,5 +1,4 @@
 package simulacao;
-//package simulacao;
 
 import java.awt.Image;
 import java.util.List;
@@ -7,8 +6,9 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
- * Representa os veiculos da simulacao.
+ * Representa os itens dinâmicos da simulacao.
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public abstract class ItemDinamico {
@@ -20,6 +20,11 @@ public abstract class ItemDinamico {
     private boolean comCaminho;
     private boolean visivel;
 
+    /**
+     * 
+     * Instancia um item dinâmico
+     * 
+     */
     public ItemDinamico(Localizacao localizacao, int tipo, String path_imagem) {
         this.localizacaoAtual = localizacao;
         this.tipo = tipo;
@@ -71,7 +76,6 @@ public abstract class ItemDinamico {
     }
 
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {
-        // System.out.print(" {" + localizacaoAtual + "} ");
         this.localizacaoAtual = localizacaoAtual;
     }
 
@@ -79,17 +83,22 @@ public abstract class ItemDinamico {
         this.localizacaoDestino = localizacaoDestino;
     }
 
+    /**
+     * 
+     * Executa a ação de movimento
+     */
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
-            // Localizacao proximaLocalizacao =
-            // getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
-            // setLocalizacaoAtual(proximaLocalizacao);
             setLocalizacaoAtual(getLocalizacaoDestino());
-            // System.out.print(" {" + proximaLocalizacao + "} ");
         }
     }
 
+    /**
+     * 
+     * Executa a ação de movimento. Altera as imagens baseadas na orientação de
+     * movimento
+     */
     public abstract void mover();
 
     public abstract List<Localizacao> getCaminho();

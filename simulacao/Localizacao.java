@@ -6,6 +6,7 @@ import java.util.Random;
 /**
  * Representa uma localização no mapa
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Localizacao {

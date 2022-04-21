@@ -1,15 +1,12 @@
 package simulacao;
-//package simulacao;
 
-//import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
-
-//import javax.swing.ImageIcon;
 
 /**
  * Representa os veiculos da simulacao.
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Veiculo extends ItemDinamico {
@@ -20,14 +17,14 @@ public class Veiculo extends ItemDinamico {
     private boolean comChamado;
     private Chamado chamado;
     ItemDinamico passageiro;
-    String path_imagemS;
-    String path_imagemL;
-    String path_imagemO;
-    String path_imagemN;
-    String path_imagemS_carregando;
-    String path_imagemL_carregando;
-    String path_imagemO_carregando;
-    String path_imagemN_carregando;
+    private String path_imagemS;
+    private String path_imagemL;
+    private String path_imagemO;
+    private String path_imagemN;
+    private String path_imagemS_carregando;
+    private String path_imagemL_carregando;
+    private String path_imagemO_carregando;
+    private String path_imagemN_carregando;
 
     public Veiculo(Localizacao localizacao, int tipo, String path_imagemN, String path_imagemS, String path_imagemL,
             String path_imagemO, String path_imagemN_carregando, String path_imagemS_carregando,
@@ -114,8 +111,6 @@ public class Veiculo extends ItemDinamico {
     public void mover() {
         if (caminho.size() > 0) {
             this.setLocalizacaoDestino(caminho.get(0));
-            // System.out.print("\n|>" + this.getLocalizacaoAtual() + " " +
-            // this.getLocalizacaoDestino());
             if (this.getLocalizacaoAtual().getX() != this.getLocalizacaoDestino().getX()) {
                 if (this.getLocalizacaoAtual().getX() > this.getLocalizacaoDestino().getX()) {
                     if (this.carrengado)
@@ -142,16 +137,6 @@ public class Veiculo extends ItemDinamico {
                         this.setPath_imagem(this.path_imagemS);
                 }
             }
-            // System.out.print("\n old|>");
-            // for (Localizacao a : this.getCaminho()) {
-            // System.out.print(" ->- " + a + " ");
-            // }
-            // System.out.print(" >|\n");
-            // System.out.print(" new|>");
-            // for (Localizacao a : this.getCaminho()) {
-            // System.out.print(" ->- " + a + " ");
-            // }
-            // System.out.print(" >|\n");
             caminho.remove(0);
             this.executarAcao();
         } else {

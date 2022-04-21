@@ -1,15 +1,12 @@
 package simulacao;
-//package simulacao;
 
-//import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-//import javax.swing.ImageIcon;
-
 /**
- * Representa os veiculos da simulacao.
+ * Representa as pessoas da simulacao.
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Pessoa extends ItemDinamico {
@@ -17,9 +14,9 @@ public class Pessoa extends ItemDinamico {
     private List<Localizacao> caminho;
     private boolean carregado;
     private boolean chamadoAtivo;
-    String path_imagemNS;
-    String path_imagemLO;
-    String path_imagemChamado;
+    private String path_imagemNS;
+    private String path_imagemLO;
+    private String path_imagemChamado;
 
     public Pessoa(Localizacao localizacao, int tipo, String path_imagemNS, String path_imagemLO,
             String path_imagemChamado) {
@@ -93,18 +90,7 @@ public class Pessoa extends ItemDinamico {
                 this.setPath_imagem(this.path_imagemNS);
 
             }
-
-            // System.out.print("\n old|>");
-            // for (Localizacao a : this.getCaminho()) {
-            // System.out.print(" ->- " + a + " ");
-            // }
-            // System.out.print(" >|\n");
             caminho.remove(0);
-            // System.out.print(" new|>");
-            // for (Localizacao a : this.getCaminho()) {
-            // System.out.print(" ->- " + a + " ");
-            // }
-            // System.out.print(" >|\n");
             this.executarAcao();
         } else {
             this.setComCaminho(false);

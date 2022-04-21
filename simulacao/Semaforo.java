@@ -1,11 +1,17 @@
 package simulacao;
 
+/**
+ * Representa os semaforos da simulacao.
+ * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
+ * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ */
 public class Semaforo extends ItemMapa {
-    boolean estado;
-    String path_imagemG;
-    String path_imagemR;
-    int tempo;
-    int runTempo;
+    private boolean estado;
+    private String path_imagemG;
+    private String path_imagemR;
+    private int tempo;
+    private int runTempo;
 
     public Semaforo(Localizacao localizacao, int tipo, String path_imagemG, String path_imagemR, int tempo,
             boolean inicio) {

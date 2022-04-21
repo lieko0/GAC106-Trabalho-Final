@@ -2,10 +2,12 @@ package simulacao;
 //package simulacao;
 
 /**
- * Representa um mapa com todos os itens que participam da simulacao
+ * Representa um mapa com os itens que compõe o cenário
  * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,8 +18,8 @@ public class Mapa {
     private int altura;
     private static Random rand = new Random();
 
-    private static final int LARGURA_PADRAO = 15;
-    private static final int ALTURA_PADRAO = 10;
+    private static final int LARGURA_PADRAO = 20;
+    private static final int ALTURA_PADRAO = 20;
     private List<ItemMapa> ruas;
     private List<ItemMapa> calcada;
     private List<ItemMapa> faixa;
@@ -31,8 +33,8 @@ public class Mapa {
     /**
      * Cria mapa para alocar itens da simulacao.
      * 
-     * @param largura: largura da área de simulacao.
-     * @param altura:  altura da área de simulação.
+     * @param largura : largura da área de simulacao.
+     * @param altura  : altura da área de simulação.
      */
     public Mapa(int largura, int altura) {
         this.largura = largura;
@@ -88,51 +90,59 @@ public class Mapa {
         return semaforos;
     }
 
+    /**
+     * Gerador de mapa.
+     */
     public void gerarMapa() {
         System.out.println("Começando a geração de mapa ...");
+
         System.out.println("Gerando ruas ...");
-        // Configurações da geração de rua
-        int quantidadeRuas = (int) (altura * largura * 0.8); // Numero de blocos do tipo rua
-        int espacamento = 10; // Tendência de tamanho das ruas (>=1) quando maior, menos esquinas o mapa terá
-        int borda = 1; // Espaço minimo entre qualquer bloco de rua e a borda ( >=1)
-        // int tipoRua = 0; // ID do bloco de rua
-        String imagemRua = "Imagens/rua.jpg"; // Imagem do bloco de rua
+        int quantidadeRuas = (int) (altura * largura * 0.3);
+        int espacamento = 10;
+        int borda = 1;
+        String imagemRua = "Imagens/rua.jpg";
+
         gerarRuas(quantidadeRuas, espacamento, borda, imagemRua, tipoRua);
+
         System.out.println("Gerando calcadas ...");
+        String imagemCalcada = "Imagens/calcada.jpg";
 
-        // Configurações da geração de calcadas (sempre gerada 1 bloco ao redor das
-        // ruas)
-        // int tipoCalcada = 1; // ID do bloco de calcada
-        String imagemCalcada = "Imagens/calcada.jpg"; // Imagem do bloco de calcada
         gerarCalcada(imagemCalcada, tipoCalcada);
-        System.out.println("Gerando faixas de pedestre ...");
 
-        // Configurações da geração de calcadas (sempre gerada em qualquer cruzamento de
-        // ruas)
-        // Caso não tenha cruzamentos uma faixa será criada aleatoriamente
-        // int tipoFaixaPedestre = 2; // ID do bloco de faixa de pedestre
-        String imagemFaixaPedestre = "Imagens/faixa.jpg"; // Imagem do bloco de faixa (horizontal)
-        String imagemFaixaPedestreFlip = "Imagens/faixa_alt.jpg"; // Imagem do bloco de faixa (vertical)
+        System.out.println("Gerando faixas de pedestre ...");
+        String imagemFaixaPedestre = "Imagens/faixa.jpg";
+        String imagemFaixaPedestreFlip = "Imagens/faixa_alt.jpg";
+
         gerarFaixaPedestre(tipoRua, tipoCalcada, imagemFaixaPedestre,
                 imagemFaixaPedestreFlip, tipoFaixaPedestre);
 
         System.out.println("Gerando semaforos ...");
-        int tempo = 30;
-        String imagemSemaforoGreen = "Imagens/semaforoG.png"; // Imagem do semaforo verde
-        String imagemSemaforoRed = "Imagens/semaforoR.png"; // Imagem do semaforo vermelho
+        int tempo = 5;
+        String imagemSemaforoGreen = "Imagens/semaforoG.png";
+        String imagemSemaforoRed = "Imagens/semaforoR.png";
+
         this.gerarSemaforo(imagemSemaforoGreen, imagemSemaforoRed, tempo);
-        // for (ItemMapa s : getSemaforo()) {
-        // System.out.print(" ~{" + s.getLocalizacaoAtual() + "}~ ");
-        // }
+
         System.out.println("Preenchendo espaço vazio do mapa ...");
-        // Configurações da geração do resto do mapa (área que não for preenchida pelos
-        // outros blocos)
-        int tipoPreenchimento = 3; // ID do bloco de faixa de pedestre
-        String imagemPreenchimento = "Imagens/preenchimento.png"; // Imagem do bloco de preenchimento
+        int tipoPreenchimento = 3;
+        String imagemPreenchimento = "Imagens/preenchimento.png";
+
         preencheEspaco(imagemPreenchimento, tipoPreenchimento);
 
     }
 
+    /**
+     * Gerador de ruas.
+     * 
+     * @param max           : número máximo de ruas
+     * @param espacamento   : Tendência de tamanho das ruas (>=1) quando maior,
+     *                      menos
+     *                      esquinas o mapa terá
+     * @param borda         : Espaço minimo entre qualquer bloco de rua e a borda (
+     *                      >=1)
+     * @param imagemCaminho : imagem do bloco de rua
+     * @param tipo          : ID do bloco de rua
+     */
     private void gerarRuas(int max, int espacamento, int borda, String imagemCaminho, int tipo) {
         ItemMapa umItem;
         int dir;
@@ -229,6 +239,12 @@ public class Mapa {
         }
     }
 
+    /**
+     * Gerador de calcadas.
+     * 
+     * @param imagemCaminho : imagem do bloco de calcada
+     * @param tipo          : ID do bloco de calcada
+     */
     private void gerarCalcada(String imagemCaminho, int tipo) {
         ItemMapa umItem;
         int x, y;
@@ -296,6 +312,16 @@ public class Mapa {
         }
     }
 
+    /**
+     * Gerador de faixas de pedestre.
+     * 
+     * @param tipoRua          : ID do bloco de rua
+     * @param tipoCalcada      : ID do bloco de calcada
+     * @param imagemCaminho    : imagem do bloco de faixas de pedestre
+     * @param imagemCaminhoAlt : imagem do bloco de faixas de pedestre em outra
+     *                         direção
+     * @param tipo             : ID do bloco de faixas de pedestre
+     */
     private void gerarFaixaPedestre(int tipoRua, int tipoCalcada, String imagemCaminho, String imagemCaminhoAlt,
             int tipo) {
         int x, y;
@@ -327,23 +353,17 @@ public class Mapa {
             }
 
             if (umCruzamento.size() > 2) {
-                // umItem = cruzamento.get((int) Math.floor(Math.random() * cruzamento.size()));
+
                 int cruzamentoValido = 0;
                 for (ItemMapa umItem : umCruzamento) {
 
                     x = umItem.getLocalizacaoAtual().getX();
                     y = umItem.getLocalizacaoAtual().getY();
-                    // removerItem(umItem);
-                    // umItem = new ItemMapa(new Localizacao(x, y), tipoRua, "Imagens/inicio.jpg");
-                    // adicionarItem(umItem);
-
-                    // // System.out.println("tentando : " + ": " + x + "," + y);
 
                     if (verificaVizinho(tipo, x, y) == 0 && verificaVizinho(tipoRua, x, y) < 3) {
                         if (y != altura - 1 && y != 0 && x != largura - 1 && x != 0) {
                             if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada
                                     && getItem(x - 1, y) != null && getItem(x - 1, y).getTipo() == tipoCalcada) {
-                                // // System.out.println("sucesso x : " + ": " + x + "," + y);
                                 removerItem(umItem);
                                 umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminhoAlt);
                                 adicionarItem(umItem);
@@ -353,7 +373,6 @@ public class Mapa {
                             }
                             if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipoCalcada
                                     && getItem(x, y - 1) != null && getItem(x, y - 1).getTipo() == tipoCalcada) {
-                                // // System.out.println("sucesso y : " + ": " + x + "," + y);
                                 removerItem(umItem);
                                 umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminho);
                                 adicionarItem(umItem);
@@ -383,7 +402,7 @@ public class Mapa {
                     if (getItem(x + 1, y) != null && getItem(x + 1, y).getTipo() == tipoCalcada
                             && getItem(x - 1, y) != null
                             && getItem(x - 1, y).getTipo() == tipoCalcada) {
-                        // // System.out.println("sucesso x : " + ": " + x + "," + y);
+
                         removerItem(umItem);
                         ruas.remove(umItem);
                         umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminhoAlt);
@@ -395,7 +414,6 @@ public class Mapa {
                     }
                     if (getItem(x, y + 1) != null && getItem(x, y + 1).getTipo() == tipoCalcada
                             && getItem(x, y - 1) != null && getItem(x, y - 1).getTipo() == tipoCalcada) {
-                        // // System.out.println("sucesso y : " + ": " + x + "," + y);
                         removerItem(umItem);
                         ruas.remove(umItem);
                         umItem = new ItemMapa(new Localizacao(x, y), tipo, imagemCaminho);
@@ -412,137 +430,145 @@ public class Mapa {
         }
     }
 
+    /**
+     * Gerador de semaforos.
+     * 
+     * @param path_imagemG : Imagem do semaforo verde
+     * @param path_imagemR : Imagem do semaforo vermelho
+     * @param tempo        : tempo (em execuções) entre as mudanças de estado do
+     *                     semaforo
+     */
     private void gerarSemaforo(String path_imagemG, String path_imagemR, int tempo) {
         ItemMapa cru;
         boolean repetido;
-        // for (ItemMapa c : this.getCruzamento()) {
-        // System.out.println(c.getLocalizacaoAtual());
-
-        // }
+        int xCruzam, yCruzam;
         for (int i = 0; i < this.getCruzamento().size(); i++) {
             cru = this.getCruzamento().get(i);
-            if ((cru.getLocalizacaoAtual().getX() + 1) < largura
-                    && this.getItem(cru.getLocalizacaoAtual().getX() + 1, cru.getLocalizacaoAtual().getY())
+            xCruzam = cru.getLocalizacaoAtual().getX();
+            yCruzam = cru.getLocalizacaoAtual().getY();
+
+            if ((xCruzam + 1) < largura
+                    && this.getItem(xCruzam + 1, yCruzam)
                             .getTipo() == this.getTipoFaixaPedestre()) {
-                if ((cru.getLocalizacaoAtual().getY() - 1 > 0)
-                        && this.getItem(cru.getLocalizacaoAtual().getX(), cru.getLocalizacaoAtual().getY() - 1)
+                if ((yCruzam - 1 > 0)
+                        && this.getItem(xCruzam, yCruzam - 1)
                                 .getTipo() == this.getTipoFaixaPedestre()) {
 
                     repetido = false;
                     for (ItemMapa sem : semaforos) {
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX() + 1)
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY())) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam + 1)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam)) {
                             repetido = true;
                         }
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX())
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY() - 1)) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam - 1)) {
                             repetido = true;
                         }
                     }
                     if (repetido == false) {
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX() + 1,
-                                                cru.getLocalizacaoAtual().getY()),
+                                        new Localizacao(xCruzam + 1,
+                                                yCruzam),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         true));
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX(),
-                                                cru.getLocalizacaoAtual().getY() - 1),
+                                        new Localizacao(xCruzam,
+                                                yCruzam - 1),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         false));
                     }
 
-                } else if ((cru.getLocalizacaoAtual().getY() + 1 < altura)
-                        && this.getItem(cru.getLocalizacaoAtual().getX(), cru.getLocalizacaoAtual().getY() + 1)
+                } else if ((yCruzam + 1 < altura)
+                        && this.getItem(xCruzam, yCruzam + 1)
                                 .getTipo() == this.getTipoFaixaPedestre()) {
 
                     repetido = false;
                     for (ItemMapa sem : semaforos) {
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX() + 1)
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY())) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam + 1)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam)) {
                             repetido = true;
                         }
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX())
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY() + 1)) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam + 1)) {
                             repetido = true;
                         }
                     }
                     if (repetido == false) {
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX() + 1,
-                                                cru.getLocalizacaoAtual().getY()),
+                                        new Localizacao(xCruzam + 1,
+                                                yCruzam),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         true));
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX(),
-                                                cru.getLocalizacaoAtual().getY() + 1),
+                                        new Localizacao(xCruzam,
+                                                yCruzam + 1),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         false));
                     }
                 }
 
-            } else if ((cru.getLocalizacaoAtual().getX() - 1 > 0)
-                    && this.getItem(cru.getLocalizacaoAtual().getX() - 1, cru.getLocalizacaoAtual().getY())
+            } else if ((xCruzam - 1 > 0)
+                    && this.getItem(xCruzam - 1, yCruzam)
                             .getTipo() == this.getTipoFaixaPedestre()) {
-                if ((cru.getLocalizacaoAtual().getY() - 1 > 0)
-                        && this.getItem(cru.getLocalizacaoAtual().getX(), cru.getLocalizacaoAtual().getY() - 1)
+                if ((yCruzam - 1 > 0)
+                        && this.getItem(xCruzam, yCruzam - 1)
                                 .getTipo() == this.getTipoFaixaPedestre()) {
                     repetido = false;
                     for (ItemMapa sem : semaforos) {
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX() - 1)
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY())) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam - 1)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam)) {
                             repetido = true;
                         }
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX())
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY() - 1)) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam - 1)) {
                             repetido = true;
                         }
                     }
                     if (repetido == false) {
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX() - 1,
-                                                cru.getLocalizacaoAtual().getY()),
+                                        new Localizacao(xCruzam - 1,
+                                                yCruzam),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         true));
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX(),
-                                                cru.getLocalizacaoAtual().getY() - 1),
+                                        new Localizacao(xCruzam,
+                                                yCruzam - 1),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         false));
                     }
 
-                } else if ((cru.getLocalizacaoAtual().getY() + 1 > altura)
-                        && this.getItem(cru.getLocalizacaoAtual().getX(), cru.getLocalizacaoAtual().getY() + 1)
+                } else if ((yCruzam + 1 > altura)
+                        && this.getItem(xCruzam, yCruzam + 1)
                                 .getTipo() == this.getTipoFaixaPedestre()) {
 
                     repetido = false;
                     for (ItemMapa sem : semaforos) {
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX() - 1)
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY())) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam - 1)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam)) {
                             repetido = true;
                         }
-                        if (sem.getLocalizacaoAtual().getX() == (cru.getLocalizacaoAtual().getX())
-                                && sem.getLocalizacaoAtual().getY() == (cru.getLocalizacaoAtual().getY() + 1)) {
+                        if (sem.getLocalizacaoAtual().getX() == (xCruzam)
+                                && sem.getLocalizacaoAtual().getY() == (yCruzam + 1)) {
                             repetido = true;
                         }
                     }
                     if (repetido == false) {
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX() - 1,
-                                                cru.getLocalizacaoAtual().getY()),
+                                        new Localizacao(xCruzam - 1,
+                                                yCruzam),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         true));
                         semaforos.add(
                                 new Semaforo(
-                                        new Localizacao(cru.getLocalizacaoAtual().getX(),
-                                                cru.getLocalizacaoAtual().getY() + 1),
+                                        new Localizacao(xCruzam,
+                                                yCruzam + 1),
                                         cru.getTipo(), path_imagemG, path_imagemR, tempo,
                                         false));
                     }
@@ -551,6 +577,12 @@ public class Mapa {
         }
     }
 
+    /**
+     * Peencher espaços que sobraram de calcadas.
+     * 
+     * @param imagemCaminho : imagem do bloco de preenchimento
+     * @param tipo          : ID do bloco de preenchimento
+     */
     private void preencheEspaco(String imagemCaminho, int tipo) {
         ItemMapa umItem;
         for (int i = 0; i < largura; i++) {
@@ -563,6 +595,14 @@ public class Mapa {
         }
     }
 
+    /**
+     * Verificas quantos vizinhos do mesmo tipo do bloco tem ao redor.
+     * 
+     * @param tipo : ID do bloco a ser procurado
+     * @param x    : coordenada x do bloco
+     * @param y    : coordenada y do bloco
+     * @return int número de vizinho de mesmo tipo
+     */
     private int verificaVizinho(int tipo, int x, int y) {
         int retorno = 0;
         if (y < altura - 1) {
@@ -589,18 +629,26 @@ public class Mapa {
         return retorno;
     }
 
+    /**
+     * Verificas se tem vizinhos em blocos adjacentes (usado na geração de ruas)
+     * 
+     * @param tipo : ID do bloco a ser procurado
+     * @param x    : coordenada x do bloco
+     * @param y    : coordenada y do bloco
+     * @param x    : coordenada x do bloco
+     * @param y    : coordenada y do bloco
+     * @return boolean número de vizinho de mesmo tipo
+     */
     private boolean verifica2Prox(int tipo, int x, int y, int dirX, int dirY) {
         ItemMapa p;
         if (dirY == 1 || dirY == -1) {
             if (y < altura - 1) {
                 p = getItem(x, y + 1);
                 if (p != null && p.getTipo() == tipo) {
-                    // // System.out.println("aqui 1");
                     return false;
                 } else if (y < altura - 2) {
                     p = getItem(x, y + 2);
                     if (p != null && p.getTipo() == tipo) {
-                        // // System.out.println("aqui 2");
                         return false;
                     }
                 }
@@ -608,12 +656,10 @@ public class Mapa {
             if (y > 0) {
                 p = getItem(x, y - 1);
                 if (p != null && p.getTipo() == tipo) {
-                    // // System.out.println("aqui 3");
                     return false;
                 } else if (y > 1) {
                     p = getItem(x, y - 2);
                     if (p != null && p.getTipo() == tipo) {
-                        // // System.out.println("aqui 4");
                         return false;
                     }
                 }
@@ -624,12 +670,10 @@ public class Mapa {
             if (x < largura - 1) {
                 p = getItem(x + 1, y);
                 if (p != null && p.getTipo() == tipo) {
-                    // // System.out.println("aqui 5");
                     return false;
                 } else if (x < largura - 2) {
                     p = getItem(x + 2, y);
                     if (p != null && p.getTipo() == tipo) {
-                        // // System.out.println("aqui 6");
                         return false;
                     }
                 }
@@ -637,21 +681,24 @@ public class Mapa {
             if (x > 0) {
                 p = getItem(x - 1, y);
                 if (p != null && p.getTipo() == tipo) {
-                    // // System.out.println("aqui 7");
                     return false;
                 } else if (x > 1) {
                     p = getItem(x - 2, y);
                     if (p != null && p.getTipo() == tipo) {
-                        // // System.out.println("aqui 8");
                         return false;
                     }
                 }
             }
         }
-        // // System.out.println("aqui 9");
         return true;
     }
 
+    /**
+     * Retorna bloco de rua proxima a um bolco de calcada
+     * 
+     * @param calcada : Localizacao do bloco de calcada
+     * @return Localizacao do bloco de rua
+     */
     public Localizacao ruaProx(Localizacao calcada) {
         int x = calcada.getX();
         int y = calcada.getY();
@@ -708,58 +755,12 @@ public class Mapa {
 
     }
 
-    public Localizacao calcadaProx(Localizacao rua) {
-        int x = rua.getX();
-        int y = rua.getY();
-        if (x + 1 < largura && this.getItem(x + 1, y)
-                .getTipo() == tipoCalcada) {
-            return getItem(x + 1, y)
-                    .getLocalizacaoAtual();
-        } else if (y + 1 < altura && this.getItem(x, y + 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x, y + 1)
-                    .getLocalizacaoAtual();
-        } else if (x - 1 > 0 && this.getItem(x - 1, y)
-                .getTipo() == tipoCalcada) {
-            return getItem(x - 1, y)
-                    .getLocalizacaoAtual();
-        } else if (y - 1 > 0 && this.getItem(x, y - 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x, y - 1)
-                    .getLocalizacaoAtual();
-        } else if (x + 1 < largura && y + 1 < altura && this.getItem(x + 1, y + 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x + 1, y + 1)
-                    .getLocalizacaoAtual();
-        } else if (x - 1 > 0 && y + 1 < altura && this.getItem(x - 1, y + 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x - 1, y + 1)
-                    .getLocalizacaoAtual();
-        } else if (x - 1 > 0 && y - 1 > 0 && this.getItem(x - 1, y - 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x - 1, y - 1)
-                    .getLocalizacaoAtual();
-        } else if (x + 1 < largura && y - 1 > 0 && this.getItem(x + 1, y - 1)
-                .getTipo() == tipoCalcada) {
-            return getItem(x + 1, y - 1)
-                    .getLocalizacaoAtual();
-        } else {
-            return null;
-        }
-
-    }
-
     public void adicionarItem(ItemMapa v) {
         itens[v.getLocalizacaoAtual().getX()][v.getLocalizacaoAtual().getY()] = v;
     }
 
     public void removerItem(ItemMapa v) {
         itens[v.getLocalizacaoAtual().getX()][v.getLocalizacaoAtual().getY()] = null;
-    }
-
-    public void atualizarMapa(ItemMapa v) {
-        removerItem(v);
-        adicionarItem(v);
     }
 
     public ItemMapa getItem(int x, int y) {

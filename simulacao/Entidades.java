@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Representa todas as entidades dinâmicas da simulacao.
+ * 
+ * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
+ * 
+ */
 public class Entidades {
     private Mapa mapa;
     private List<ItemDinamico> todasEntidades;
@@ -19,6 +25,12 @@ public class Entidades {
     private List<Chamado> chamados;
     private boolean chamadoAberto;
 
+    /**
+     * 
+     * Instanciando Entidades
+     * 
+     * @param mapa : mapa da simulação
+     */
     public Entidades(Mapa mapa) {
         this.altura = mapa.getAltura();
         this.largura = mapa.getLargura();
@@ -40,9 +52,16 @@ public class Entidades {
         this.calcadaGraph.criarGrafo(mapa.getItens(), altura, largura);
     }
 
-    public void criarPopulacao() {
+    /**
+     * 
+     * Cria pessoas e motos
+     * 
+     * @param numPessoas : número de pessoas criadas
+     * @param numMotos   : número de motos criadas
+     */
+    public void criarPopulacao(int numPessoas, int numMotos) {
         System.out.println("Gerando entidades ...");
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < numPessoas; i++) {
             if (i % 3 == 0) {
                 this.adicionarPessoa("Imagens/pessoaNS_1.png", "Imagens/pessoaLO_1.png", "Imagens/pessoaChamado_1.png");
             } else if (i % 3 == 1) {
@@ -52,7 +71,7 @@ public class Entidades {
             }
 
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < numMotos; i++) {
 
             this.adicionarVeiculo("Imagens/motoN.png", "Imagens/motoS.png", "Imagens/motoL.png", "Imagens/motoO.png",
                     "Imagens/motoN_passageiro.png", "Imagens/motoS_passageiro.png", "Imagens/motoL_passageiro.png",
@@ -61,60 +80,53 @@ public class Entidades {
         }
 
     }
-    /*
-     * private boolean verificaOcupado(ItemDinamico d) {
-     * return true;
-     * }
-     */
 
+    /**
+     * Adiciona pessoas
+     */
     private void adicionarPessoa(String path_imagemNS, String path_imagemLO, String path_imagemChamado) {
 
         ItemMapa umItem = mapa.getCalcada().get((int) Math.floor(Math.random() *
                 mapa.getCalcada().size()));
-        // ItemMapa umItem = mapa.getFaixa().get((int) Math.floor(Math.random() *
-        // mapa.getFaixa().size()));
+
         Localizacao localizacao = umItem.getLocalizacaoAtual();
-        // // System.out.print(" ~{" + localizacao + "}~ ");
+
         int tipo = mapa.getTipoCalcada();
         Pessoa p = new Pessoa(localizacao, tipo, path_imagemNS, path_imagemLO, path_imagemChamado);
 
         Localizacao destino = mapa.getCalcada().get((int) Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
                 .getLocalizacaoAtual();
-        // // System.out.print(" ^{" + destino + "}^ ");
 
         p.setCaminho(calcadaGraph.menosCaminhoL(p.getLocalizacaoAtual(), destino));
 
-        // // System.out.print("\n |>");
-        // for (Localizacao a : p.getCaminho()) {
-        // // System.out.print(" ->- " + a + " ");
-        // }
         todasEntidades.add(p);
         populacao.add(p);
-        // // System.out.print(" >|\n");
+
     }
 
+    /**
+     * 
+     * Adiciona veiculos
+     */
     private void adicionarVeiculo(String path_imagemN, String path_imagemS, String path_imagemL,
             String path_imagemO, String path_imagemN_carregando, String path_imagemS_carregando,
             String path_imagemL_carregando,
             String path_imagemO_carregando) {
         ItemMapa umItem = mapa.getRuas().get((int) Math.floor(Math.random() * mapa.getRuas().size()));
         Localizacao localizacao = umItem.getLocalizacaoAtual();
-        // // System.out.print(" ~{" + localizacao + "}~ ");
+
         int tipo = mapa.getTipoRua();
         Veiculo v = new Veiculo(localizacao, tipo, path_imagemN, path_imagemS, path_imagemL, path_imagemO,
                 path_imagemN_carregando, path_imagemS_carregando, path_imagemL_carregando, path_imagemO_carregando);
 
         Localizacao destino = mapa.getRuas().get((int) Math.floor(rand.nextDouble() * mapa.getRuas().size()))
                 .getLocalizacaoAtual();
-        // // System.out.print(" ^{" + destino + "}^ ");
+
         v.setCaminho(ruaGraph.menosCaminhoL(v.getLocalizacaoAtual(), destino));
-        // // System.out.print("\n |>");
-        // for (Localizacao a : v.getCaminho()) {
-        // // System.out.print(" ->- " + a + " ");
-        // }
+
         todasEntidades.add(v);
         frota.add(v);
-        // // System.out.print(" >|\n");
+
     }
 
     public List<ItemDinamico> getTodasEntidades() {
@@ -129,6 +141,15 @@ public class Entidades {
         return populacao;
     }
 
+    /**
+     * 
+     * Executa ação das entidades. Primeiramente de todas as pessoas (primeirametne
+     * as com chamados ativos e depois das demais). Após isso executa a ação das
+     * motos (primeiramente das com chamados ativos e depois das demais). As
+     * operações se resume em gerar caminhos e executar os passos de movimentação e
+     * de criação e execução de chamados. E por fim
+     * executa as operações dos semaforos.
+     */
     public void executar() {
 
         for (Pessoa p : this.getPopulacao()) {
@@ -136,7 +157,7 @@ public class Entidades {
             int indexP = populacao.indexOf(p);
             if (!p.getComCaminho() && p.getChamadoAtivo() != true) {
 
-                int choice = rand.nextInt(10);
+                int choice = rand.nextInt(2);
                 Localizacao destino = mapa.getCalcada()
                         .get((int) Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
                         .getLocalizacaoAtual();
@@ -155,13 +176,10 @@ public class Entidades {
             boolean impedimento = false;
             if (p.getCaminho().size() > 0) {
                 Localizacao proxLoc = p.getCaminho().get(0);
-                // System.out.print(" #{" + v.getLocalizacaoAtual() + "}");
-                // System.out.print(" -> {" + proxLoc + "}# ");
 
                 for (ItemDinamico mot : frota) {
                     if (mot.getLocalizacaoAtual().getX() == proxLoc.getX()
                             && mot.getLocalizacaoAtual().getY() == proxLoc.getY()) {
-                        // System.out.print(" col+{" + proxLoc + "}+ ");
                         impedimento = true;
                     }
                 }
@@ -176,7 +194,6 @@ public class Entidades {
             }
             if (impedimento == false) {
                 p.mover();
-                // System.out.print(" ^{" + p.getLocalizacaoAtual() + "}^ ");
                 this.todasEntidades.set(indexE, p);
                 this.populacao.set(indexP, p);
             }
@@ -184,7 +201,7 @@ public class Entidades {
         }
 
         for (Veiculo v : this.getFrota()) {
-            // System.out.print(" ^{" + v.getComCaminho() + "}^ ");
+
             int indexE = todasEntidades.indexOf(v);
             int indexF = frota.indexOf(v);
             if (v.getComChamado() && !v.getIndoChamado() && !v.getCarregando()) {
@@ -235,7 +252,6 @@ public class Entidades {
                     Localizacao destino = mapa.getRuas()
                             .get((int) Math.floor(rand.nextDouble() * mapa.getRuas().size()))
                             .getLocalizacaoAtual();
-                    // // System.out.print(" ^{" + destino + "}^ ");
 
                     v.setCaminho(ruaGraph.menosCaminhoL(v.getLocalizacaoAtual(), destino));
                 }
@@ -244,13 +260,11 @@ public class Entidades {
             boolean impedimento = false;
             if (v.getCaminho().size() > 0) {
                 Localizacao proxLoc = v.getCaminho().get(0);
-                // System.out.print(" #{" + v.getLocalizacaoAtual() + "}");
-                // System.out.print(" -> {" + proxLoc + "}# ");
 
                 for (ItemDinamico pess : populacao) {
                     if (pess.getLocalizacaoAtual().getX() == proxLoc.getX()
                             && pess.getLocalizacaoAtual().getY() == proxLoc.getY()) {
-                        // System.out.print(" col+{" + proxLoc + "}+ ");
+
                         impedimento = true;
                     }
                 }
@@ -269,10 +283,7 @@ public class Entidades {
                 }
             }
             if (impedimento == false) {
-                // System.out.print(" ~{" + pessoaNaFaixa + "}~ \n");
-                // System.out.print(v.getPath_imagem());
                 v.mover();
-                // System.out.print(v.getPath_imagem() + "\n");
                 this.todasEntidades.set(indexE, v);
                 this.frota.set(indexF, v);
             }

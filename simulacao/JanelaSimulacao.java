@@ -51,6 +51,9 @@ public class JanelaSimulacao extends JFrame {
         for (ItemDinamico d : entidades.getTodasEntidades()) {
             visaoMapa.desenharImagem(d.getLocalizacaoAtual().getY(), d.getLocalizacaoAtual().getX(), d.getImagem());
         }
+        for (ItemMapa s : mapa.getSemaforo()) {
+            visaoMapa.desenharImagem(s.getLocalizacaoAtual().getY(), s.getLocalizacaoAtual().getX(), s.getImagem());
+        }
         visaoMapa.repaint();
     }
 
@@ -109,7 +112,7 @@ public class JanelaSimulacao extends JFrame {
             }
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, tamanho.width, tamanho.height);
-            g.setColor(Color.CYAN);
+            g.setColor(Color.WHITE);
             for (int i = 0, x = 0; x < tamanho.width; i++, x = i * xScale) {
                 g.drawLine(x, 0, x, tamanho.height - 1);
             }

@@ -31,7 +31,7 @@ public class Simulacao {
         janelaSimulacao.executarAcao();
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
-            esperar(500);
+            esperar(200);
         }
     }
 

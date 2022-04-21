@@ -13,10 +13,12 @@ public class ItemMapa {
     private Localizacao localizacaoAtual;
     private Image imagem;
     private int tipo;
+    String path_imagem;
 
     public ItemMapa(Localizacao localizacao, int tipo, String path_imagem) {
         this.localizacaoAtual = localizacao;
         this.tipo = tipo;
+        this.path_imagem = path_imagem;
         // // System.out.println(path_imagem);
         imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();// Imagens/veiculo.jpg
     }
@@ -31,6 +33,15 @@ public class ItemMapa {
 
     public Image getImagem() {
         return imagem;
+    }
+
+    public String getPath_imagem() {
+        return path_imagem;
+    }
+
+    public void setPath_imagem(String path_imagem) {
+        this.path_imagem = path_imagem;
+        imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();
     }
 
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {

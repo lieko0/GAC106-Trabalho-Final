@@ -37,6 +37,11 @@ public abstract class ItemDinamico {
         return path_imagem;
     }
 
+    public void setPath_imagem(String path_imagem) {
+        this.path_imagem = path_imagem;
+        imagem = new ImageIcon(getClass().getResource(path_imagem)).getImage();
+    }
+
     public Localizacao getLocalizacaoAtual() {
         return localizacaoAtual;
     }
@@ -77,8 +82,10 @@ public abstract class ItemDinamico {
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
-            Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
-            setLocalizacaoAtual(proximaLocalizacao);
+            // Localizacao proximaLocalizacao =
+            // getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
+            // setLocalizacaoAtual(proximaLocalizacao);
+            setLocalizacaoAtual(getLocalizacaoDestino());
             // System.out.print(" {" + proximaLocalizacao + "} ");
         }
     }

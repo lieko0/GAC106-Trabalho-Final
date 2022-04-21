@@ -9,6 +9,7 @@ public class Entidades {
     private List<ItemDinamico> todasEntidades;
     private List<ItemDinamico> populacao;
     private List<ItemDinamico> frota;
+
     private int largura;
     private int altura;
     private static Random rand = new Random();
@@ -41,22 +42,19 @@ public class Entidades {
 
     public void criarPopulacao() {
         System.out.println("Gerando entidades ...");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             if (i % 3 == 0) {
-                this.adicionarPessoa("Imagens/pessoa.png");
+                this.adicionarPessoa("Imagens/pessoaNS_1.png", "Imagens/pessoaLO_1.png");
             } else if (i % 3 == 1) {
-                this.adicionarPessoa("Imagens/pessoa1.png");
+                this.adicionarPessoa("Imagens/pessoaNS_2.png", "Imagens/pessoaLO_2.png");
             } else {
-                this.adicionarPessoa("Imagens/pessoa2.png");
+                this.adicionarPessoa("Imagens/pessoaNS_3.png", "Imagens/pessoaLO_3.png");
             }
 
-            if (i % 3 == 0) {
-                this.adicionarVeiculo("Imagens/veiculo.png");
-            } else if (i % 3 == 1) {
-                this.adicionarVeiculo("Imagens/veiculo1.png");
-            } else {
-                this.adicionarVeiculo("Imagens/veiculo2.png");
-            }
+        }
+        for (int i = 0; i < 10; i++) {
+
+            this.adicionarVeiculo("Imagens/motoN.png", "Imagens/motoS.png", "Imagens/motoL.png", "Imagens/motoO.png");
 
         }
 
@@ -67,7 +65,7 @@ public class Entidades {
      * }
      */
 
-    private void adicionarPessoa(String path_imagem) {
+    private void adicionarPessoa(String path_imagemNS, String path_imagemLO) {
 
         ItemMapa umItem = mapa.getCalcada().get((int) Math.floor(Math.random() *
                 mapa.getCalcada().size()));
@@ -76,7 +74,7 @@ public class Entidades {
         Localizacao localizacao = umItem.getLocalizacaoAtual();
         // // System.out.print(" ~{" + localizacao + "}~ ");
         int tipo = mapa.getTipoCalcada();
-        ItemDinamico p = new Pessoa(localizacao, tipo, path_imagem);
+        ItemDinamico p = new Pessoa(localizacao, tipo, path_imagemNS, path_imagemLO);
 
         Localizacao destino = mapa.getCalcada().get((int) Math.floor(rand.nextDouble() * mapa.getCalcada().size()))
                 .getLocalizacaoAtual();
@@ -93,12 +91,13 @@ public class Entidades {
         // // System.out.print(" >|\n");
     }
 
-    private void adicionarVeiculo(String path_imagem) {
+    private void adicionarVeiculo(String path_imagemN, String path_imagemS, String path_imagemL,
+            String path_imagemO) {
         ItemMapa umItem = mapa.getRuas().get((int) Math.floor(Math.random() * mapa.getRuas().size()));
         Localizacao localizacao = umItem.getLocalizacaoAtual();
         // // System.out.print(" ~{" + localizacao + "}~ ");
         int tipo = mapa.getTipoRua();
-        ItemDinamico v = new Veiculo(localizacao, tipo, path_imagem);
+        ItemDinamico v = new Veiculo(localizacao, tipo, path_imagemN, path_imagemS, path_imagemL, path_imagemO);
 
         Localizacao destino = mapa.getRuas().get((int) Math.floor(rand.nextDouble() * mapa.getRuas().size()))
                 .getLocalizacaoAtual();
@@ -141,11 +140,35 @@ public class Entidades {
                 p.setCaminho(calcadaGraph.menosCaminhoL(p.getLocalizacaoAtual(), destino));
 
             }
+            boolean impedimento = false;
+            if (p.getCaminho().size() > 0) {
+                Localizacao proxLoc = p.getCaminho().get(0);
+                // System.out.print(" #{" + v.getLocalizacaoAtual() + "}");
+                // System.out.print(" -> {" + proxLoc + "}# ");
 
-            p.mover();
-            // System.out.print(" ^{" + p.getLocalizacaoAtual() + "}^ ");
-            this.todasEntidades.set(indexE, p);
-            this.populacao.set(indexP, p);
+                for (ItemDinamico mot : frota) {
+                    if (mot.getLocalizacaoAtual().getX() == proxLoc.getX()
+                            && mot.getLocalizacaoAtual().getY() == proxLoc.getY()) {
+                        // System.out.print(" col+{" + proxLoc + "}+ ");
+                        impedimento = true;
+                    }
+                }
+                for (Semaforo sema : mapa.getSemaforo()) {
+                    if (sema.getLocalizacaoAtual().getX() == proxLoc.getX()
+                            && sema.getLocalizacaoAtual().getY() == proxLoc.getY()) {
+                        if (sema.getEstado() == true)
+                            impedimento = true;
+                    }
+                }
+
+            }
+            if (impedimento == false) {
+                p.mover();
+                // System.out.print(" ^{" + p.getLocalizacaoAtual() + "}^ ");
+                this.todasEntidades.set(indexE, p);
+                this.populacao.set(indexP, p);
+            }
+
         }
 
         for (ItemDinamico v : this.getFrota()) {
@@ -166,7 +189,7 @@ public class Entidades {
                 }
 
             }
-            boolean pessoaNaFaixa = false;
+            boolean impedimento = false;
             if (v.getCaminho().size() > 0) {
                 Localizacao proxLoc = v.getCaminho().get(0);
                 // System.out.print(" #{" + v.getLocalizacaoAtual() + "}");
@@ -175,19 +198,36 @@ public class Entidades {
                 for (ItemDinamico pess : populacao) {
                     if (pess.getLocalizacaoAtual().getX() == proxLoc.getX()
                             && pess.getLocalizacaoAtual().getY() == proxLoc.getY()) {
-                        System.out.print(" col+{" + proxLoc + "}+ ");
-                        pessoaNaFaixa = true;
+                        // System.out.print(" col+{" + proxLoc + "}+ ");
+                        impedimento = true;
                     }
                 }
+                for (Semaforo sema : mapa.getSemaforo()) {
+                    if (sema.getLocalizacaoAtual().getX() == proxLoc.getX()
+                            && sema.getLocalizacaoAtual().getY() == proxLoc.getY()) {
+                        if (sema.getEstado() == false)
+                            impedimento = true;
 
+                    }
+                }
+                for (ItemMapa cruz : mapa.getCruzamento()) {
+                    if (cruz.getLocalizacaoAtual().getX() == v.getLocalizacaoAtual().getX()
+                            && cruz.getLocalizacaoAtual().getY() == v.getLocalizacaoAtual().getY())
+                        impedimento = false;
+                }
             }
-            if (pessoaNaFaixa == false) {
+            if (impedimento == false) {
                 // System.out.print(" ~{" + pessoaNaFaixa + "}~ \n");
+                // System.out.print(v.getPath_imagem());
                 v.mover();
+                // System.out.print(v.getPath_imagem() + "\n");
                 this.todasEntidades.set(indexE, v);
                 this.frota.set(indexF, v);
             }
 
+        }
+        for (Semaforo sem : mapa.getSemaforo()) {
+            sem.run();
         }
 
     }

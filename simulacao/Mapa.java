@@ -1,5 +1,8 @@
 package simulacao;
-//package simulacao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Representa um mapa com os itens que compõe o cenário
@@ -7,11 +10,6 @@ package simulacao;
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class Mapa {
     private ItemMapa[][] itens;
     private int largura;

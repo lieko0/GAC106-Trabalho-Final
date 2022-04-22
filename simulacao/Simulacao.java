@@ -5,6 +5,7 @@ package simulacao;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * 
  */
 public class Simulacao {
     private JanelaSimulacao janelaSimulacao;

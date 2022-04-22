@@ -11,6 +11,7 @@ package simulacao;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author Luiz Merschmann
+ * 
  */
 public class Principal {
 

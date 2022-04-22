@@ -8,6 +8,7 @@ import java.util.Random;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * 
  */
 public class Localizacao {
     private int x;
@@ -19,6 +20,7 @@ public class Localizacao {
      * 
      * @param x Coordenada x: deve ser maior ou igual a 0.
      * @param y Coordenada y: deve ser maior ou igual a 0.
+     * 
      */
     public Localizacao(int x, int y) {
         this.x = x;
@@ -38,6 +40,7 @@ public class Localizacao {
      * 
      * @param localizacaoDestino: localizacao que se deseja alcancar.
      * @return Localizacao para onde se deve ir
+     * 
      */
     public Localizacao proximaLocalizacao(Localizacao localizacaoDestino) {
         if (localizacaoDestino.equals(this)) {// Verifica se já alcancou o destino
@@ -69,6 +72,7 @@ public class Localizacao {
      * 
      * @return true: se a localizacao é igual.
      *         false: caso contrario.
+     * 
      */
     @Override
     public boolean equals(Object obj) {
@@ -84,6 +88,7 @@ public class Localizacao {
 
     /**
      * @return A representacao da localizacao.
+     * 
      */
     @Override
     public String toString() {

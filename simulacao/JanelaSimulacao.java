@@ -9,6 +9,7 @@ import javax.swing.*;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * 
  */
 public class JanelaSimulacao extends JFrame {
     private Mapa mapa;
@@ -32,6 +33,7 @@ public class JanelaSimulacao extends JFrame {
 
     /**
      * Mostra o estado atual do mapa.
+     * 
      */
     public void executarAcao() {
 
@@ -64,6 +66,7 @@ public class JanelaSimulacao extends JFrame {
      * uma classe interna que define os componentes da GUI.
      * Ela contém alguns detalhes mais avancados sobre GUI
      * que voce pode ignorar para realizacao do seu trabalho.
+     * 
      */
     private class VisaoMapa extends JPanel {
 
@@ -77,6 +80,7 @@ public class JanelaSimulacao extends JFrame {
 
         /**
          * Cria um novo componente VisaoMapa.
+         * 
          */
         public VisaoMapa(int largura, int altura) {
             larguraMapa = largura;
@@ -87,6 +91,7 @@ public class JanelaSimulacao extends JFrame {
 
         /**
          * Informa para o gerenciador GUI o tamanho.
+         * 
          */
         public Dimension getPreferredSize() {
             return new Dimension(larguraMapa * VIEW_SCALING_FACTOR,
@@ -96,6 +101,7 @@ public class JanelaSimulacao extends JFrame {
         /**
          * Prepara para um novo ciclo de exibicao. Uma vez que o componente
          * pode ser redimensionado, calcula o "fator de escala" novamente.
+         * 
          */
         public void preparePaint() {
             if (!tamanho.equals(getSize())) { // se o tamanho mudou...
@@ -125,6 +131,7 @@ public class JanelaSimulacao extends JFrame {
 
         /**
          * Desenha a imagem para um determinado item.
+         * 
          */
         public void desenharImagem(int y, int x, Image image) {
             g.drawImage(image, x * xScale + 1, y * yScale + 1,
@@ -138,6 +145,7 @@ public class JanelaSimulacao extends JFrame {
         /**
          * O componente VisaoMapa precisa ser reexibido. Copia a
          * imagem interna para a tela.
+         * 
          */
         public void paintComponent(Graphics g) {
             if (imagemMapa != null) {

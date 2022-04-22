@@ -27,8 +27,8 @@ public class Graph {
     private int[] parents;
 
     /**
-     * 
      * Intancia Grafo
+     * 
      */
     public Graph(int altura, int largura, int tipo, int tipoAlt) {
         adjacencyMatrix = new int[altura * largura][altura * largura];
@@ -50,8 +50,8 @@ public class Graph {
     }
 
     /**
-     * 
      * Cria um grafo baseado nos tipos de parâmetro
+     * 
      */
     public void criarGrafo(ItemMapa[][] itens, int altura, int largura) {
         for (int i = 0; i < largura; i++) {
@@ -73,8 +73,8 @@ public class Graph {
     }
 
     /**
-     * 
      * Retorna o menor caminho entre os dois vertices
+     * 
      */
     private List<Integer> menosCaminho(int startVertex, int destino) {
         this.caminho.clear();
@@ -85,9 +85,8 @@ public class Graph {
     }
 
     /**
-     * 
-     * 
      * Retorna o menor caminho entre as duas localizações
+     * 
      */
     public List<Localizacao> menosCaminhoL(Localizacao origem, Localizacao destino) {
         loc.clear();
@@ -100,8 +99,8 @@ public class Graph {
     }
 
     /**
-     * 
      * Algoritimo de dijktra usado na obtenção do menor caminho
+     * 
      */
     private void dijkstra(int[][] adjacencyMatrix,
             int startVertex, int destino) {
@@ -182,8 +181,8 @@ public class Graph {
     }
 
     /**
-     * 
      * Cria o caminho baseado nas interações realizadas no algoritmo de dijkstra
+     * 
      */
     private void createPathRec(int destino,
             int[] parents) {

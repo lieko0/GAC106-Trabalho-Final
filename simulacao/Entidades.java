@@ -26,10 +26,10 @@ public class Entidades {
     private boolean chamadoAberto;
 
     /**
-     * 
      * Instanciando Entidades
      * 
      * @param mapa : mapa da simulação
+     * 
      */
     public Entidades(Mapa mapa) {
         this.altura = mapa.getAltura();
@@ -53,11 +53,11 @@ public class Entidades {
     }
 
     /**
-     * 
      * Cria pessoas e motos
      * 
      * @param numPessoas : número de pessoas criadas
      * @param numMotos   : número de motos criadas
+     * 
      */
     public void criarPopulacao(int numPessoas, int numMotos) {
         System.out.println("Gerando entidades ...");
@@ -83,6 +83,7 @@ public class Entidades {
 
     /**
      * Adiciona pessoas
+     * 
      */
     private void adicionarPessoa(String path_imagemNS, String path_imagemLO, String path_imagemChamado) {
 
@@ -105,8 +106,8 @@ public class Entidades {
     }
 
     /**
-     * 
      * Adiciona veiculos
+     * 
      */
     private void adicionarVeiculo(String path_imagemN, String path_imagemS, String path_imagemL,
             String path_imagemO, String path_imagemN_carregando, String path_imagemS_carregando,
@@ -142,13 +143,13 @@ public class Entidades {
     }
 
     /**
-     * 
      * Executa ação das entidades. Primeiramente de todas as pessoas (primeirametne
      * as com chamados ativos e depois das demais). Após isso executa a ação das
      * motos (primeiramente das com chamados ativos e depois das demais). As
      * operações se resume em gerar caminhos e executar os passos de movimentação e
      * de criação e execução de chamados. E por fim
      * executa as operações dos semaforos.
+     * 
      */
     public void executar() {
 

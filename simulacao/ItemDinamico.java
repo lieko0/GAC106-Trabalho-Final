@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * 
  */
 public abstract class ItemDinamico {
     private Localizacao localizacaoAtual;
@@ -21,7 +22,6 @@ public abstract class ItemDinamico {
     private boolean visivel;
 
     /**
-     * 
      * Instancia um item dinâmico
      * 
      */
@@ -84,8 +84,8 @@ public abstract class ItemDinamico {
     }
 
     /**
-     * 
      * Executa a ação de movimento
+     * 
      */
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
@@ -95,9 +95,9 @@ public abstract class ItemDinamico {
     }
 
     /**
-     * 
      * Executa a ação de movimento. Altera as imagens baseadas na orientação de
      * movimento
+     * 
      */
     public abstract void mover();
 

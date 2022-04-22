@@ -9,6 +9,7 @@ import java.util.Random;
  * 
  * @author TP3 - ARTHUR HAUCK DITTZ, MARCO ANTONIO MAGALHAES
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * 
  */
 public class Mapa {
     private ItemMapa[][] itens;
@@ -33,6 +34,7 @@ public class Mapa {
      * 
      * @param largura : largura da área de simulacao.
      * @param altura  : altura da área de simulação.
+     * 
      */
     public Mapa(int largura, int altura) {
         this.largura = largura;
@@ -47,6 +49,7 @@ public class Mapa {
 
     /**
      * Cria mapa com tamanho padrao.
+     * 
      */
     public Mapa() {
         this(LARGURA_PADRAO, ALTURA_PADRAO);
@@ -90,6 +93,7 @@ public class Mapa {
 
     /**
      * Gerador de mapa.
+     * 
      */
     public void gerarMapa() {
         System.out.println("Começando a geração de mapa ...");
@@ -133,13 +137,15 @@ public class Mapa {
      * Gerador de ruas.
      * 
      * @param max           : número máximo de ruas
-     * @param espacamento   : Tendência de tamanho das ruas (>=1) quando maior,
+     * @param espacamento   : Tendência de tamanho das ruas (maior ou igual a 1)
+     *                      quando maior,
      *                      menos
      *                      esquinas o mapa terá
      * @param borda         : Espaço minimo entre qualquer bloco de rua e a borda (
-     *                      >=1)
+     *                      maior ou igual a 1)
      * @param imagemCaminho : imagem do bloco de rua
      * @param tipo          : ID do bloco de rua
+     * 
      */
     private void gerarRuas(int max, int espacamento, int borda, String imagemCaminho, int tipo) {
         ItemMapa umItem;
@@ -242,6 +248,7 @@ public class Mapa {
      * 
      * @param imagemCaminho : imagem do bloco de calcada
      * @param tipo          : ID do bloco de calcada
+     * 
      */
     private void gerarCalcada(String imagemCaminho, int tipo) {
         ItemMapa umItem;
@@ -319,6 +326,7 @@ public class Mapa {
      * @param imagemCaminhoAlt : imagem do bloco de faixas de pedestre em outra
      *                         direção
      * @param tipo             : ID do bloco de faixas de pedestre
+     * 
      */
     private void gerarFaixaPedestre(int tipoRua, int tipoCalcada, String imagemCaminho, String imagemCaminhoAlt,
             int tipo) {
@@ -435,6 +443,7 @@ public class Mapa {
      * @param path_imagemR : Imagem do semaforo vermelho
      * @param tempo        : tempo (em execuções) entre as mudanças de estado do
      *                     semaforo
+     * 
      */
     private void gerarSemaforo(String path_imagemG, String path_imagemR, int tempo) {
         ItemMapa cru;
@@ -580,6 +589,7 @@ public class Mapa {
      * 
      * @param imagemCaminho : imagem do bloco de preenchimento
      * @param tipo          : ID do bloco de preenchimento
+     * 
      */
     private void preencheEspaco(String imagemCaminho, int tipo) {
         ItemMapa umItem;
@@ -600,6 +610,7 @@ public class Mapa {
      * @param x    : coordenada x do bloco
      * @param y    : coordenada y do bloco
      * @return int número de vizinho de mesmo tipo
+     * 
      */
     private int verificaVizinho(int tipo, int x, int y) {
         int retorno = 0;
@@ -636,6 +647,7 @@ public class Mapa {
      * @param x    : coordenada x do bloco
      * @param y    : coordenada y do bloco
      * @return boolean número de vizinho de mesmo tipo
+     * 
      */
     private boolean verifica2Prox(int tipo, int x, int y, int dirX, int dirY) {
         ItemMapa p;
@@ -696,6 +708,7 @@ public class Mapa {
      * 
      * @param calcada : Localizacao do bloco de calcada
      * @return Localizacao do bloco de rua
+     * 
      */
     public Localizacao ruaProx(Localizacao calcada) {
         int x = calcada.getX();

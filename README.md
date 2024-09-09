@@ -10,6 +10,10 @@ Principais entidades:
 - Semáforos
 - Mapa (Ruas, Calçadas e Faixas de pedestre)
 
+Diagrama de classes:
+
+<img src="Diagrama Simplificado.jpg" alt="">
+
 Extras:
 - O mapa é gerado aleatóriamente
 - O movimento dos pedestres e motos é feito utilizando o algoritmo de Dijkstra
